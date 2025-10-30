@@ -481,5 +481,5 @@ Este proyecto está bajo la Licencia MIT - ver [LICENSE](./LICENSE) para detalle
 ---
 
 <p align="center">
-  Hecho con Mario Alguacil Juárez :)
+  Hecho por Mario Alguacil Juárez :)
 </p>
