@@ -1,10 +1,12 @@
-# 🤖 Planificador Inteligente con IA
+# 🍽️ Pland-IA - Planificador Inteligente con Despensa
 
-> Sistema full-stack que integra inteligencia artificial para optimizar la planificación y gestión de tareas.
+> Sistema multiplataforma de productividad personal inspirado en Notion, con una funcionalidad única de "Despensa Inteligente" potenciada por IA para planificar comidas y gestionar listas de la compra.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18+-blue.svg)](https://react.dev/)
+[![Flutter](https://img.shields.io/badge/Flutter-3.0+-blue.svg)](https://flutter.dev/)
 
 ---
 
@@ -27,27 +29,45 @@
 
 ## 🎯 Sobre el Proyecto
 
-[Descripción detallada del proyecto, su propósito y objetivos principales]
+**Pland-IA** es un sistema de productividad personal full-stack y multiplataforma que combina las capacidades de un gestor de tareas tipo Notion con una funcionalidad única: una **Despensa Inteligente** potenciada por IA.
 
-Este proyecto es un planificador inteligente que utiliza inteligencia artificial para:
-- 🎯 [Objetivo principal 1]
-- 📊 [Objetivo principal 2]
-- 🤖 [Objetivo principal 3]
+### ¿Qué hace diferente a Pland-IA?
+
+Este proyecto te permite:
+- 📝 **Gestionar tareas, notas y proyectos** como en Notion
+- 🍽️ **Planificar tus comidas semanales** con dietas generadas por IA
+- 🛒 **Controlar tu despensa virtual** y generar listas de la compra automáticas
+- 🤖 **Recibir sugerencias de recetas** basadas en lo que tienes disponible
+- 📊 **Optimizar tu alimentación** según tus preferencias, calorías y alergias
+
+### Objetivos del Proyecto
+
+1. **Desarrollar un producto Full-Stack completo** y multiplataforma para portfolio profesional
+2. **Integrar IA (OpenAI)** de forma útil y práctica en la vida diaria
+3. **Crear una experiencia unificada** entre Web, Escritorio (Tauri) y Móvil (Flutter)
+4. **Dominar tecnologías modernas** en un entorno de Monorepo con TypeScript
 
 ---
 
 ## ✨ Características
 
-### Funcionalidades Core
+### 📋 Productividad
+- ✅ **Workspaces y Proyectos** - Organiza tu contenido como en Notion
+- ✅ **Páginas y Tareas** - Crea documentos y gestiona tus tareas
+- ✅ **Editor Rico** - Escribe y formatea tus notas con facilidad
 - ✅ **Autenticación Segura** - Sistema completo de registro/login con JWT
-- ✅ **[Feature 1]** - Descripción breve
-- ✅ **[Feature 2]** - Descripción breve
-- ✅ **Dashboard Intuitivo** - Visualización completa de datos
 
-### Inteligencia Artificial
-- 🤖 **Sugerencias Inteligentes** - IA que analiza y sugiere optimizaciones
-- 📈 **Análisis Predictivo** - Predicciones basadas en patrones
-- 💬 **Asistente Virtual** - Chat con IA para ayuda contextual
+### 🍽️ Despensa Inteligente
+- 🥗 **Generador de Dietas con IA** - Crea planes semanales personalizados según calorías, preferencias y alergias
+- 📦 **Gestión de Despensa** - Controla tu inventario de ingredientes en tiempo real
+- 🛒 **Lista de Compra Automática** - Genera listas basadas en tus recetas y lo que te falta
+- 👨‍🍳 **Sugerencias de Recetas** - IA recomienda qué cocinar con lo que tienes
+
+### 🤖 Inteligencia Artificial
+- 🎯 **Dietas Personalizadas** - Generación de planes de comidas con OpenAI GPT-4
+- 🔄 **Optimización de Compras** - Calcula exactamente qué comprar para la semana
+- � **Sugerencias Contextuales** - Recetas basadas en ingredientes disponibles
+- � **Análisis Nutricional** - Seguimiento de calorías y nutrientes (futuro)
 
 ### Técnicas
 - 🔒 **Seguridad** - Encriptación, validación y protección contra ataques
@@ -59,36 +79,58 @@ Este proyecto es un planificador inteligente que utiliza inteligencia artificial
 
 ## 🛠️ Stack Tecnológico
 
-### Frontend
+### Arquitectura
+- **Monorepo:** `pnpm workspaces` - Gestión centralizada de dependencias
+- **Estructura:** `apps/` (ejecutables) + `packages/` (código compartido)
+
+### Frontend Web (`apps/web-desktop`)
 - **Framework:** [React](https://react.dev/) 18+ con TypeScript
 - **Build Tool:** [Vite](https://vitejs.dev/)
-- **UI Library:** [Material-UI](https://mui.com/) / [Tailwind CSS](https://tailwindcss.com/)
-- **State Management:** [Redux Toolkit](https://redux-toolkit.js.org/) / [Zustand](https://zustand-demo.pmnd.rs/)
+- **UI Library:** [Material-UI (MUI)](https://mui.com/)
+- **State Management:** [Zustand](https://zustand-demo.pmnd.rs/)
 - **HTTP Client:** [Axios](https://axios-http.com/)
-- **Routing:** [React Router](https://reactrouter.com/)
+- **Routing:** [React Router](https://reactrouter.com/) v6
 
-### Backend
+### Frontend Escritorio (`apps/web-desktop`)
+- **Framework:** [Tauri](https://tauri.app/) - Empaqueta la app React para Windows/Linux
+- **Lenguaje Backend:** Rust (gestionado por Tauri)
+
+### Frontend Móvil (`apps/mobile`)
+- **Framework:** [Flutter](https://flutter.dev/)
+- **Lenguaje:** Dart
+- **State Management:** Riverpod o Provider
+- **HTTP Client:** `dio` o `http`
+- **Plataformas:** Android (iOS potencialmente)
+
+### Backend (`apps/backend`)
 - **Runtime:** [Node.js](https://nodejs.org/) 18+
 - **Framework:** [Express.js](https://expressjs.com/)
-- **Language:** TypeScript
-- **ORM:** [Prisma](https://www.prisma.io/) / [TypeORM](https://typeorm.io/)
-- **Validation:** [Zod](https://zod.dev/)
-- **Auth:** JWT (JSON Web Tokens)
+- **Lenguaje:** TypeScript
+- **ORM:** [Prisma](https://www.prisma.io/)
+- **Validation:** [Zod](https://zod.dev/) (desde `packages/shared`)
+- **Auth:** JWT (Access + Refresh Tokens)
 
 ### Base de Datos
-- **Motor:** [PostgreSQL](https://www.postgresql.org/) / [MongoDB](https://www.mongodb.com/)
-- **Cloud:** [Supabase](https://supabase.com/) / [PlanetScale](https://planetscale.com/)
+- **Motor:** [PostgreSQL](https://www.postgresql.org/) 15+
+- **Migraciones:** Prisma Migrate
+- **Local:** Docker para desarrollo
+
+### Código Compartido (`packages/shared`)
+- **Tipos TypeScript:** Interfaces de User, Task, Diet, Recipe, etc.
+- **Validación:** Esquemas Zod compartidos entre frontend y backend
+- **Utilidades:** Funciones reutilizables
 
 ### Inteligencia Artificial
-- **Provider:** [OpenAI](https://openai.com/) / [Anthropic Claude](https://www.anthropic.com/)
-- **Library:** [LangChain](https://www.langchain.com/) (opcional)
+- **Provider:** [OpenAI](https://openai.com/) GPT-4 / GPT-3.5
+- **SDK:** `openai` oficial (llamado desde Backend)
+- **Uso:** Generación de dietas, sugerencias de recetas, listas de compra
 
 ### DevOps y Herramientas
-- **Hosting Frontend:** [Vercel](https://vercel.com/) / [Netlify](https://www.netlify.com/)
-- **Hosting Backend:** [Railway](https://railway.app/) / [Render](https://render.com/)
-- **CI/CD:** [GitHub Actions](https://github.com/features/actions)
-- **Testing:** [Jest](https://jestjs.io/) / [Vitest](https://vitest.dev/)
-- **E2E:** [Cypress](https://www.cypress.io/) / [Playwright](https://playwright.dev/)
+- **Package Manager:** [pnpm](https://pnpm.io/) (monorepo)
+- **Linting:** ESLint + Prettier
+- **Testing:** Jest / Vitest (futuro)
+- **CI/CD:** GitHub Actions (futuro)
+- **Containerization:** Docker para PostgreSQL
 
 ---
 
@@ -96,17 +138,24 @@ Este proyecto es un planificador inteligente que utiliza inteligencia artificial
 
 Antes de comenzar, asegúrate de tener instalado:
 
+### Esenciales
 - **Node.js** >= 18.0.0
-- **npm** >= 9.0.0 o **pnpm** >= 8.0.0
+- **pnpm** >= 8.0.0 (gestor de paquetes del monorepo)
 - **Git**
-- **PostgreSQL** >= 15.0 (si es local) o cuenta en servicio cloud
-- **Cuenta API OpenAI** o similar (para funcionalidades IA)
+- **Docker Desktop** (para PostgreSQL)
+- **Cuenta API OpenAI** (para funcionalidades de IA)
+
+### Opcionales (según plataforma)
+- **Rust + Tauri CLI** (para desarrollo desktop)
+- **Flutter SDK** (para desarrollo móvil)
+- **Android Studio** (para emulador móvil)
 
 ### Verificar instalación
 ```bash
-node --version
-npm --version
+node --version          # v18.0.0+
+pnpm --version          # 8.0.0+
 git --version
+docker --version
 ```
 
 ---
@@ -115,70 +164,78 @@ git --version
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/TU_USUARIO/proyecto-planificador-ia.git
-cd proyecto-planificador-ia
+git clone https://github.com/MarioAJ11/Pland-IA.git
+cd Pland-IA
 ```
 
-### 2. Instalar dependencias
-
-#### Frontend
+### 2. Instalar dependencias del monorepo
 ```bash
-cd frontend
-npm install
+pnpm install
 ```
+
+Esto instalará todas las dependencias de `apps/backend`, `apps/web-desktop`, `apps/mobile` y `packages/shared` automáticamente.
+
+### 3. Configurar PostgreSQL con Docker
+
+Inicia PostgreSQL en un contenedor:
+```bash
+docker run --name pland-ia-postgres \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=mysecretpassword \
+  -e POSTGRES_DB=plandia_db \
+  -p 5432:5432 \
+  -d postgres:15
+```
+
+### 4. Configurar variables de entorno
 
 #### Backend
+Crea el archivo `apps/backend/.env`:
 ```bash
-cd backend
-npm install
-```
-
-### 3. Configurar variables de entorno
-
-#### Frontend
-```bash
-cd frontend
+cd apps/backend
 cp .env.example .env
 ```
 
 Edita `.env` con tus valores:
 ```env
-VITE_API_URL=http://localhost:3000
-VITE_APP_NAME=Planificador IA
-```
+# Base de datos
+DATABASE_URL="postgresql://postgres:mysecretpassword@localhost:5432/plandia_db"
 
-#### Backend
-```bash
-cd backend
-cp .env.example .env
-```
+# JWT
+JWT_SECRET=tu_super_secreto_jwt_cambialo
+JWT_REFRESH_SECRET=tu_super_secreto_refresh_diferente
+JWT_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=7d
 
-Edita `.env` con tus valores:
-```env
+# OpenAI
+OPENAI_API_KEY=sk-tu-api-key-aqui
+
 # Server
 PORT=3000
 NODE_ENV=development
-
-# Database
-DATABASE_URL=postgresql://usuario:password@localhost:5432/planificador_db
-
-# JWT
-JWT_SECRET=tu_super_secreto_jwt_key_aqui
-JWT_EXPIRES_IN=7d
-JWT_REFRESH_SECRET=tu_refresh_token_secret
-JWT_REFRESH_EXPIRES_IN=30d
-
-# OpenAI (o tu provider de IA)
-OPENAI_API_KEY=sk-...
-
-# CORS
-ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
 ```
 
-### 4. Configurar base de datos
+#### Frontend (cuando esté creado)
+Crea el archivo `apps/web-desktop/.env`:
+```env
+VITE_API_URL=http://localhost:3000
+VITE_APP_NAME=Pland-IA
+```
+
+### 5. Inicializar base de datos con Prisma
 
 ```bash
-cd backend
+cd apps/backend
+
+# Generar Prisma Client
+npx prisma generate
+
+# Ejecutar migraciones
+npx prisma migrate dev --name init
+
+# (Opcional) Abrir Prisma Studio para ver la BD
+npx prisma studio
+```
 
 # Generar cliente Prisma
 npx prisma generate
@@ -192,105 +249,109 @@ npx prisma db seed
 
 ---
 
-## ⚙️ Configuración
-
-### Base de Datos Local (PostgreSQL)
-
-#### Opción 1: Instalación directa
-1. Instala PostgreSQL desde [postgresql.org](https://www.postgresql.org/download/)
-2. Crea una base de datos:
-```sql
-CREATE DATABASE planificador_db;
-```
-
-#### Opción 2: Docker
-```bash
-docker run --name postgres-planificador \
-  -e POSTGRES_DB=planificador_db \
-  -e POSTGRES_USER=usuario \
-  -e POSTGRES_PASSWORD=password \
-  -p 5432:5432 \
-  -d postgres:15
-```
-
-### API Keys
-
-#### OpenAI
-1. Crea cuenta en [platform.openai.com](https://platform.openai.com)
-2. Genera API key en el dashboard
-3. Agrega la key a tu `.env`
-
----
-
 ## 🎮 Uso
 
 ### Desarrollo
 
 #### Iniciar Backend
 ```bash
-cd backend
-npm run dev
+cd apps/backend
+pnpm dev
 ```
 El servidor estará disponible en `http://localhost:3000`
 
-#### Iniciar Frontend
+#### Iniciar Frontend Web
 ```bash
-cd frontend
-npm run dev
+cd apps/web-desktop
+pnpm dev
 ```
 La aplicación estará disponible en `http://localhost:5173`
 
-### Producción
-
-#### Build Frontend
+#### Iniciar App Desktop (Tauri)
 ```bash
-cd frontend
-npm run build
-npm run preview  # Preview del build
+cd apps/web-desktop
+pnpm tauri dev
 ```
 
-#### Build Backend
+#### Iniciar App Móvil (Flutter)
 ```bash
-cd backend
-npm run build
-npm start
+cd apps/mobile
+flutter run
 ```
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura del Proyecto (Monorepo)
 
 ```
-proyecto-raiz/
-├── frontend/                    # Aplicación React
-│   ├── public/                  # Assets estáticos
-│   ├── src/
-│   │   ├── components/          # Componentes React
-│   │   │   ├── ui/              # Componentes UI base
-│   │   │   ├── layout/          # Layout components
-│   │   │   └── features/        # Componentes de features
-│   │   ├── pages/               # Páginas/Vistas
-│   │   ├── services/            # Servicios API
-│   │   ├── hooks/               # Custom React hooks
-│   │   ├── context/             # React Context providers
-│   │   ├── store/               # Redux store (si aplica)
-│   │   ├── utils/               # Utilidades
-│   │   ├── types/               # TypeScript types
-│   │   ├── constants/           # Constantes
-│   │   ├── styles/              # Estilos globales
-│   │   ├── App.tsx              # Componente principal
-│   │   └── main.tsx             # Entry point
-│   ├── .env.example             # Variables de entorno ejemplo
-│   ├── vite.config.ts           # Configuración Vite
-│   ├── tsconfig.json            # Configuración TypeScript
-│   └── package.json
+Pland-IA/
+├── apps/
+│   ├── backend/                 # API Node.js + Express
+│   │   ├── src/
+│   │   │   ├── controllers/     # Controladores de rutas
+│   │   │   ├── services/        # Lógica de negocio
+│   │   │   ├── routes/          # Definición de rutas
+│   │   │   ├── middleware/      # Middleware custom
+│   │   │   ├── utils/           # Utilidades
+│   │   │   ├── config/          # Configuraciones
+│   │   │   ├── types/           # TypeScript types
+│   │   │   ├── validators/      # Schemas de validación
+│   │   │   └── index.ts         # Entry point
+│   │   ├── prisma/
+│   │   │   ├── schema.prisma    # Esquema de BD
+│   │   │   ├── migrations/      # Migraciones
+│   │   │   └── seed.ts          # Seed data
+│   │   ├── tests/               # Tests
+│   │   ├── .env                 # Variables de entorno
+│   │   └── package.json
+│   │
+│   ├── web-desktop/             # Frontend React + Tauri
+│   │   ├── src/
+│   │   │   ├── components/      # Componentes React
+│   │   │   │   ├── ui/          # Componentes UI base
+│   │   │   │   ├── layout/      # Layouts
+│   │   │   │   └── features/    # Features específicas
+│   │   │   ├── pages/           # Páginas/Rutas
+│   │   │   ├── services/        # Servicios API
+│   │   │   ├── hooks/           # Custom hooks
+│   │   │   ├── store/           # Zustand store
+│   │   │   ├── utils/           # Utilidades
+│   │   │   ├── types/           # TypeScript types
+│   │   │   ├── App.tsx
+│   │   │   └── main.tsx
+│   │   ├── src-tauri/           # Código Rust de Tauri
+│   │   ├── public/              # Assets estáticos
+│   │   └── package.json
+│   │
+│   └── mobile/                  # App Flutter
+│       ├── lib/
+│       │   ├── models/          # Modelos de datos
+│       │   ├── services/        # Servicios API
+│       │   ├── providers/       # State management
+│       │   ├── screens/         # Pantallas
+│       │   ├── widgets/         # Widgets reutilizables
+│       │   └── main.dart
+│       ├── android/             # Config Android
+│       ├── ios/                 # Config iOS
+│       └── pubspec.yaml
 │
-├── backend/                     # API Node.js
-│   ├── src/
-│   │   ├── controllers/         # Controladores de rutas
-│   │   ├── services/            # Lógica de negocio
-│   │   ├── models/              # Modelos de datos
-│   │   ├── routes/              # Definición de rutas
+├── packages/
+│   └── shared/                  # Código compartido
+│       ├── src/
+│       │   ├── types/           # Interfaces TypeScript
+│       │   ├── validators/      # Esquemas Zod
+│       │   └── utils/           # Utilidades compartidas
+│       └── package.json
+│
+├── .github/
+│   ├── copilot-instructions.md  # Instrucciones para Copilot
+│   ├── PROJECT_CONTEXT.md       # Contexto del proyecto
+│   └── ROADMAP.md               # Plan de desarrollo
+│
+├── pnpm-workspace.yaml          # Configuración del monorepo
+├── package.json                 # Root package.json
+└── README.md                    # Este archivo
+```
 │   │   ├── middleware/          # Middleware custom
 │   │   ├── utils/               # Utilidades
 │   │   ├── config/              # Configuraciones
@@ -336,98 +397,87 @@ npm run build        # Build para producción
 npm run preview      # Preview del build
 npm run lint         # Ejecutar ESLint
 npm run lint:fix     # Fix errores de linting
-npm run type-check   # Verificar tipos TypeScript
-npm run test         # Ejecutar tests
-npm run test:watch   # Tests en modo watch
-npm run test:coverage # Coverage de tests
+## 🔧 Scripts Disponibles
+
+### Root (Monorepo)
+
+```bash
+pnpm install             # Instalar todas las dependencias
+pnpm --filter backend dev         # Iniciar solo backend
+pnpm --filter web-desktop dev     # Iniciar solo frontend web
+pnpm run dev:all         # Iniciar todos los proyectos (si está configurado)
 ```
 
 ### Backend
 
 ```bash
-npm run dev          # Modo desarrollo con hot reload
-npm run build        # Compilar TypeScript
-npm start            # Producción (requiere build previo)
-npm run lint         # Ejecutar ESLint
-npm run lint:fix     # Fix errores de linting
-npm run test         # Ejecutar tests
-npm run test:watch   # Tests en modo watch
-npm run test:coverage # Coverage de tests
+cd apps/backend
+
+pnpm dev                 # Modo desarrollo con hot reload
+pnpm build               # Compilar TypeScript
+pnpm start               # Producción (requiere build previo)
+pnpm lint                # Ejecutar ESLint
+pnpm test                # Ejecutar tests (futuro)
 
 # Prisma
-npm run prisma:generate  # Generar cliente Prisma
-npm run prisma:migrate   # Ejecutar migraciones
-npm run prisma:studio    # Abrir Prisma Studio
-npm run prisma:seed      # Ejecutar seed
+npx prisma generate      # Generar cliente Prisma
+npx prisma migrate dev   # Ejecutar migraciones
+npx prisma studio        # Abrir Prisma Studio GUI
+npx prisma db seed       # Ejecutar seed (futuro)
+```
+
+### Frontend Web
+
+```bash
+cd apps/web-desktop
+
+pnpm dev                 # Modo desarrollo (Vite)
+pnpm build               # Build para producción
+pnpm preview             # Preview del build
+pnpm lint                # Ejecutar ESLint
+pnpm test                # Ejecutar tests (futuro)
+
+# Tauri (Desktop)
+pnpm tauri dev           # Modo desarrollo desktop
+pnpm tauri build         # Build para Windows/Linux
+```
+
+### Mobile (Flutter)
+
+```bash
+cd apps/mobile
+
+flutter run              # Ejecutar en emulador/dispositivo
+flutter build apk        # Build APK para Android
+flutter test             # Ejecutar tests
 ```
 
 ---
 
 ## 📚 Documentación
 
-- **[PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)** - Contexto completo del proyecto
-- **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Arquitectura del sistema
-- **[ROADMAP.md](./ROADMAP.md)** - Plan de desarrollo
-- **[.github/copilot-instructions.md](./.github/copilot-instructions.md)** - Guía para GitHub Copilot
-- **[API.md](./docs/API.md)** - Documentación de la API
-- **[GUIA_CONFIGURACION_COPILOT.md](./GUIA_CONFIGURACION_COPILOT.md)** - Cómo configurar Copilot
+### Documentación del Proyecto
+- **[.github/PROJECT_CONTEXT.md](./.github/PROJECT_CONTEXT.md)** - Contexto completo del proyecto
+- **[.github/ROADMAP.md](./.github/ROADMAP.md)** - Plan de desarrollo por fases
+- **[.github/copilot-instructions.md](./.github/copilot-instructions.md)** - Instrucciones para GitHub Copilot
 
----
+### Guías de Configuración
+- **[.github/GUIA_CONFIGURACION_COPILOT.md](./.github/GUIA_CONFIGURACION_COPILOT.md)** - Cómo configurar Copilot
+- **[.github/COMO_EMPEZAR.md](./.github/COMO_EMPEZAR.md)** - Guía de inicio rápido
+- **[.github/PLANTILLAS_CONFIGURACION.md](./.github/PLANTILLAS_CONFIGURACION.md)** - Templates de `.env`
 
-## 🧪 Testing
-
-```bash
-# Frontend
-cd frontend
-npm run test              # Tests unitarios
-npm run test:coverage     # Con coverage
-npm run test:e2e          # Tests E2E (Cypress/Playwright)
-
-# Backend
-cd backend
-npm run test              # Tests unitarios
-npm run test:integration  # Tests de integración
-npm run test:coverage     # Con coverage
-```
-
-### Coverage mínimo requerido
-- Statements: 80%
-- Branches: 75%
-- Functions: 80%
-- Lines: 80%
-
----
-
-## 🚀 Deploy
-
-### Frontend (Vercel)
-
-1. Conecta tu repositorio en [vercel.com](https://vercel.com)
-2. Configura variables de entorno
-3. Deploy automático en cada push a `main`
-
-### Backend (Railway/Render)
-
-1. Conecta tu repositorio
-2. Configura variables de entorno
-3. Configura base de datos
-4. Deploy automático
-
-Ver [DEPLOY.md](./docs/DEPLOY.md) para instrucciones detalladas.
+### Referencias
+- [Prisma Docs](https://www.prisma.io/docs)
+- [React Docs](https://react.dev/)
+- [Express Docs](https://expressjs.com/)
+- [Flutter Docs](https://flutter.dev/docs)
+- [Tauri Docs](https://tauri.app/)
 
 ---
 
 ## 🤝 Contribuir
 
-¡Las contribuciones son bienvenidas! Por favor lee [CONTRIBUTING.md](./CONTRIBUTING.md) para detalles.
-
-### Proceso
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'feat: add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+Este es un proyecto personal de portfolio, pero las sugerencias y feedback son bienvenidos.
 
 ### Convenciones de Commits
 
@@ -467,19 +517,45 @@ Este proyecto está bajo la Licencia MIT - ver [LICENSE](./LICENSE) para detalle
 
 - **Email:** tu_email@ejemplo.com
 - **GitHub:** [@tu_usuario](https://github.com/tu_usuario)
-- **LinkedIn:** [Tu Nombre](https://linkedin.com/in/tu-perfil)
+
+---
+
+## 👥 Autor
+
+- **Mario Alguacil Juárez** - Desarrollador Full-Stack
+- **GitHub:** [@MarioAJ11](https://github.com/MarioAJ11)
+- **Proyecto:** Portfolio personal de desarrollo Full-Stack con IA
+
+---
+
+## 🙏 Agradecimientos
+
+- [OpenAI](https://openai.com/) por la API GPT-4
+- [Prisma](https://www.prisma.io/) por el excelente ORM
+- [Tauri](https://tauri.app/) por hacer posible apps desktop con React
+- [Flutter](https://flutter.dev/) por el framework móvil multiplataforma
+- Comunidad de código abierto
 
 ---
 
 ## 🔗 Enlaces Útiles
 
-- [Documentación del Proyecto](./docs/)
-- [Reportar un Bug](https://github.com/tu_usuario/proyecto/issues)
-- [Solicitar Feature](https://github.com/tu_usuario/proyecto/issues)
-- [Roadmap](./ROADMAP.md)
+- [Documentación del Proyecto](./.github/)
+- [Roadmap del Desarrollo](./.github/ROADMAP.md)
+- [Contexto del Proyecto](./.github/PROJECT_CONTEXT.md)
+- [Reportar un Bug](https://github.com/MarioAJ11/Pland-IA/issues)
+- [Solicitar Feature](https://github.com/MarioAJ11/Pland-IA/issues)
+
+---
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](./LICENSE) para más detalles.
 
 ---
 
 <p align="center">
-  Hecho por Mario Alguacil Juárez :)
+  <strong>Pland-IA</strong> - Planificador Inteligente con Despensa 🍽️<br>
+  Hecho con ❤️ por <a href="https://github.com/MarioAJ11">Mario Alguacil Juárez</a><br>
+  <em>Proyecto de Portfolio Full-Stack 2025</em>
 </p>
