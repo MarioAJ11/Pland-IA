@@ -481,6 +481,25 @@ Con esta configuración, podremos trabajar juntos de manera más eficiente y pro
 
 ---
 
+## 🌟 Mi Modo de Aprendizaje: "Guíame, No lo Hagas por Mí"
+
+He configurado Copilot (`copilot-instructions.md`) para que actúe como un mentor. Para que esto funcione, yo también debo cambiar mi forma de preguntar.
+
+### ❌ Evitaré Pedir Esto:
+
+* "Crea el componente `UserCard`."
+* "Implementa el endpoint `POST /api/login`."
+* "Escribe el código para conectar a la base de datos."
+
+### ✅ Practicaré Peticiones Guiadas:
+
+* "Quiero empezar el componente `UserCard`. ¿Qué props crees que debería recibir según el `PROJECT_CONTEXT.md`? Dame un esqueleto inicial del archivo."
+* "Necesito implementar el login. ¿Cuáles son los pasos? Supongo que primero es definir la ruta en Express, ¿verdad?"
+* "Estoy listo para conectar Prisma a PostgreSQL. ¿Qué variables de entorno necesito definir en `backend/.env` y cómo instancio el cliente de Prisma en un archivo de servicio?"
+* "Este es mi código para el servicio de `AuthService`. ¿Ves algún problema de seguridad o algo que pueda refactorizar?" 
+
+---
+
 **¿Listo para empezar?** 🚀
 
 Crea tus archivos de contexto y comencemos a desarrollar tu proyecto.
