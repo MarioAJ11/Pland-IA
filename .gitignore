@@ -109,10 +109,8 @@ logs
 # ============================================
 # GITHUB
 # ============================================
-# NO ignorar .github - mantener documentación
  .github/info/
- 
-
+ .gitignore
 
 # ============================================
 # OLD BACKEND (Node.js/Prisma) - A eliminar
