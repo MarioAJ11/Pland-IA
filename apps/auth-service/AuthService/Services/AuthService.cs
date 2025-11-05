@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using AuthService.Data;
 using AuthService.Models.DTOs;
 using AuthService.Models.Entities;
+using Serilog;
 
 namespace AuthService.Services;
 
@@ -16,11 +17,13 @@ public class AuthService : IAuthService
 {
     private readonly AppDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly Serilog.ILogger _logger;
 
     public AuthService(AppDbContext context, IConfiguration configuration)
     {
         _context = context;
         _configuration = configuration;
+        _logger = Log.ForContext<AuthService>();
     }
 
     /// <summary>
@@ -28,12 +31,15 @@ public class AuthService : IAuthService
     /// </summary>
     public async Task<LoginResponse> RegisterAsync(RegisterRequest request)
     {
+        _logger.Information("📝 Intentando registrar usuario: {Email}", request.Email);
+        
         // 1. Validar que el email no exista
         var existingUser = await _context.Users
             .FirstOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
 
         if (existingUser != null)
         {
+            _logger.Warning("⚠️ Intento de registro con email duplicado: {Email}", request.Email);
             throw new InvalidOperationException("El email ya está registrado");
         }
 
@@ -55,6 +61,8 @@ public class AuthService : IAuthService
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
+
+        _logger.Information("✅ Usuario registrado exitosamente: {UserId} - {Email}", user.Id, user.Email);
 
         // 4. Generar tokens JWT
         var accessToken = GenerateAccessToken(user);
@@ -81,12 +89,15 @@ public class AuthService : IAuthService
     /// </summary>
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
+        _logger.Information("🔐 Intento de login: {Email}", request.Email);
+        
         // 1. Buscar usuario por email
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
 
         if (user == null)
         {
+            _logger.Warning("⚠️ Intento de login fallido - Usuario no encontrado: {Email}", request.Email);
             throw new UnauthorizedAccessException("Credenciales inválidas");
         }
 
@@ -95,12 +106,14 @@ public class AuthService : IAuthService
 
         if (!isValidPassword)
         {
+            _logger.Warning("⚠️ Intento de login fallido - Contraseña incorrecta: {Email}", request.Email);
             throw new UnauthorizedAccessException("Credenciales inválidas");
         }
 
         // 3. Verificar que el usuario esté activo
         if (!user.IsActive)
         {
+            _logger.Warning("⚠️ Intento de login fallido - Usuario inactivo: {Email}", request.Email);
             throw new UnauthorizedAccessException("Usuario inactivo. Contacte al administrador.");
         }
 
@@ -116,6 +129,9 @@ public class AuthService : IAuthService
         user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(refreshTokenDays);
         user.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
+
+        _logger.Information("✅ Login exitoso: {UserId} - {Email} (RememberMe: {RememberMe})", 
+            user.Id, user.Email, request.RememberMe);
 
         // 7. Retornar respuesta
         return new LoginResponse
@@ -133,24 +149,29 @@ public class AuthService : IAuthService
     /// </summary>
     public async Task<LoginResponse> RefreshTokenAsync(RefreshTokenRequest request)
     {
+        _logger.Information("🔄 Solicitud de renovación de token");
+        
         // 1. Buscar usuario por refresh token
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.RefreshToken == request.RefreshToken);
 
         if (user == null)
         {
+            _logger.Warning("⚠️ Intento de renovación con token inválido");
             throw new UnauthorizedAccessException("Refresh token inválido");
         }
 
         // 2. Verificar expiración
         if (user.RefreshTokenExpiry == null || user.RefreshTokenExpiry <= DateTime.UtcNow)
         {
+            _logger.Warning("⚠️ Intento de renovación con token expirado: {Email}", user.Email);
             throw new UnauthorizedAccessException("Refresh token expirado. Por favor, inicie sesión nuevamente.");
         }
 
         // 3. Verificar que el usuario esté activo
         if (!user.IsActive)
         {
+            _logger.Warning("⚠️ Intento de renovación - Usuario inactivo: {Email}", user.Email);
             throw new UnauthorizedAccessException("Usuario inactivo");
         }
 
@@ -174,6 +195,9 @@ public class AuthService : IAuthService
         user.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
 
+        _logger.Information("✅ Token renovado exitosamente: {UserId} - {Email} (Sliding: +{Days} días)", 
+            user.Id, user.Email, newExpirationDays);
+
         // 7. Retornar nuevos tokens
         return new LoginResponse
         {
@@ -189,6 +213,8 @@ public class AuthService : IAuthService
     /// </summary>
     public async Task RevokeRefreshTokenAsync(Guid userId)
     {
+        _logger.Information("🚪 Cerrando sesión: {UserId}", userId);
+        
         var user = await _context.Users.FindAsync(userId);
 
         if (user != null)
@@ -197,6 +223,12 @@ public class AuthService : IAuthService
             user.RefreshTokenExpiry = null;
             user.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
+            
+            _logger.Information("✅ Sesión cerrada exitosamente: {Email}", user.Email);
+        }
+        else
+        {
+            _logger.Warning("⚠️ Intento de logout con userId inválido: {UserId}", userId);
         }
     }
 

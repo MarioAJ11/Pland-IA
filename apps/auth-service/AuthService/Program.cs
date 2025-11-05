@@ -2,8 +2,33 @@ using Microsoft.EntityFrameworkCore;
 using AuthService.Data;
 using AuthService.Services;
 using AuthService.Middleware;
+using Serilog;
+
+// Configurar Serilog ANTES de crear el builder
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console(
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext}{NewLine}    {Message:lj}{NewLine}{Exception}"
+    )
+    .WriteTo.File(
+        path: "logs/auth-service-.log",
+        rollingInterval: RollingInterval.Day,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}",
+        retainedFileCountLimit: 30
+    )
+    .CreateLogger();
+
+try
+{
+    Log.Information("🚀 Iniciando Auth Service...");
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Reemplazar el logging por defecto con Serilog
+builder.Host.UseSerilog();
 
 // Configurar DbContext con PostgreSQL
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -59,4 +84,16 @@ app.UseCors("AllowFrontend");
 // Mapear los controllers
 app.MapControllers();
 
-app.Run();
+    Log.Information("✅ Auth Service iniciado correctamente en {Environment}", app.Environment.EnvironmentName);
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "❌ Error fatal al iniciar Auth Service");
+    throw;
+}
+finally
+{
+    Log.Information("🛑 Cerrando Auth Service...");
+    Log.CloseAndFlush();
+}
