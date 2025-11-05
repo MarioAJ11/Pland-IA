@@ -43,58 +43,119 @@ Es un **NOTION SIMPLE** - Un organizador personal completo donde el usuario gest
 
 ---
 
-## 🛠️ Stack Tecnológico (Planificador IA)
+## 🛠️ Stack Tecnológico - Arquitectura de Microservicios
 
 ### Arquitectura
 - **Monorepo:** `pnpm workspaces`
-- **Carpetas Principales:** `apps/backend`, `apps/web-desktop`, `apps/mobile`, `packages/shared`
+- **Estructura:** Microservicios independientes por funcionalidad
+- **Carpetas:** `apps/auth-service`, `apps/core-service`, `apps/pantry-service`, `apps/web-desktop`, `apps/mobile`
 
-### Backend (`apps/backend`)
-- **Runtime:** Node.js
-- **Framework:** Express.js (o Fastify)
-- **Lenguaje:** TypeScript
-- **ORM:** Prisma
-- **Base de Datos:** PostgreSQL
-- **Validación:** Zod (definido en `packages/shared`)
-- **Auth:** JWT (con refresh tokens)
+### Backend - Microservicios
 
-### Frontend Web (`apps/web-desktop`)
-- **Framework:** React
-- **Lenguaje:** TypeScript
+#### 1. Auth Service (`apps/auth-service`)
+- **Lenguaje:** C# 12
+- **Framework:** ASP.NET Core 8 Web API
+- **ORM:** Entity Framework Core
+- **Base de Datos:** PostgreSQL (schema: `auth_schema`)
+- **Puerto:** 5001
+- **Responsabilidad:** Autenticación JWT, Registro, Login, Refresh Tokens, Gestión de usuarios
+
+#### 2. Core Service (`apps/core-service`)
+- **Lenguaje:** Java 17+
+- **Framework:** Spring Boot 3.x
+- **ORM:** Spring Data JPA (Hibernate)
+- **Base de Datos:** PostgreSQL (schema: `core_schema`)
+- **Puerto:** 8080
+- **Responsabilidad:** Workspaces, Projects, Pages, Tasks (el Notion simple)
+
+#### 3. Pantry/IA Service (`apps/pantry-service`)
+- **Lenguaje:** Python 3.11+
+- **Framework:** FastAPI
+- **ORM:** SQLAlchemy 2.0
+- **Base de Datos:** PostgreSQL (schema: `pantry_schema`)
+- **Puerto:** 8000
+- **IA:** OpenAI API (GPT-4)
+- **Responsabilidad:** Despensa, Dietas con IA, Recetas, Listas de compra
+
+### Frontend
+
+#### Web/Desktop (`apps/web-desktop`)
+- **Framework:** React 18+ con TypeScript
 - **Build Tool:** Vite
-- **UI Components:** Material-UI (MUI) o Tailwind CSS (a tu elección)
-- **State Management:** Zustand (ligero) o Redux Toolkit (robusto)
-- **HTTP Client:** Axios
+- **UI Library:** Material-UI (MUI)
+- **State Management:** Zustand
+- **HTTP Client:** Axios (consumiendo los 3 microservicios)
+- **Desktop:** Tauri (empaqueta la app React)
 
-### Frontend Escritorio (`apps/web-desktop`)
-- **Framework:** Tauri (usando el frontend de React)
-
-### Frontend Móvil (`apps/mobile`)
+#### Mobile (`apps/mobile`)
 - **Framework:** Flutter
 - **Lenguaje:** Dart
-- **State Management:** Riverpod o Provider
-- **HTTP Client:** `http` o `dio`
+- **State Management:** Riverpod
+- **HTTP Client:** dio
+
+### Base de Datos
+- **PostgreSQL 15+** con 3 schemas separados:
+  - `auth_schema` (Auth Service)
+  - `core_schema` (Core Service)
+  - `pantry_schema` (Pantry Service)
+- **Redis:** Cache (opcional)
 
 ### Paquetes Compartidos (`packages/shared`)
-- **Propósito:** Código compartido entre `backend` y `web-desktop`.
-- **Contenido:**
-  - Interfaces y Tipos de TypeScript
-  - Esquemas de validación con Zod
-
-### Inteligencia Artificial
-- **Provider:** OpenAI
-- **Biblioteca:** SDK oficial de `openai` (llamado desde el Backend)
+- **Contenido:** Tipos TypeScript compartidos para el frontend web
+- **Uso:** Solo para frontend (cada backend tiene sus propios tipos)
 
 ---
 
-## 📐 Convenciones de Código (Resumen)
+## 📐 Convenciones de Código
 
-* **Nomenclatura:** Sigue las guías de los archivos originales (camelCase, PascalCase).
-* **Monorepo:**
-    * `apps/`: Contiene las aplicaciones ejecutables.
-    * `packages/`: Contiene código compartido (no ejecutable).
-* **Commits:** Usar Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`).
-* **Estilo:** Usar ESLint y Prettier en todo el monorepo.
+### Nomenclatura por Lenguaje
+
+**.NET (C#):**
+- Clases, Interfaces, Métodos: `PascalCase` (ej: `AuthService`, `IUserRepository`, `GenerateToken`)
+- Variables locales, parámetros: `camelCase` (ej: `userId`, `emailAddress`)
+- Propiedades: `PascalCase` (ej: `Email`, `CreatedAt`)
+- Archivos: `PascalCase.cs` (ej: `AuthController.cs`, `User.cs`)
+
+**Java (Spring Boot):**
+- Clases, Interfaces: `PascalCase` (ej: `WorkspaceService`, `ProjectRepository`)
+- Métodos, variables: `camelCase` (ej: `createWorkspace`, `userId`)
+- Constantes: `UPPER_SNAKE_CASE` (ej: `MAX_PAGE_SIZE`)
+- Archivos: `PascalCase.java` (ej: `WorkspaceController.java`)
+
+**Python (FastAPI):**
+- Clases: `PascalCase` (ej: `DietService`, `RecipeModel`)
+- Funciones, variables: `snake_case` (ej: `generate_diet`, `user_id`)
+- Constantes: `UPPER_SNAKE_CASE` (ej: `OPENAI_API_KEY`)
+- Archivos: `snake_case.py` (ej: `ai_service.py`, `diet_router.py`)
+
+**TypeScript/JavaScript (React):**
+- Componentes: `PascalCase` (ej: `LoginPage`, `TaskCard`)
+- Funciones, variables: `camelCase` (ej: `getUserData`, `isLoading`)
+- Constantes: `UPPER_SNAKE_CASE` (ej: `API_BASE_URL`)
+- Archivos: 
+  - Componentes: `PascalCase.tsx` (ej: `LoginPage.tsx`)
+  - Utilidades: `camelCase.ts` (ej: `apiClient.ts`)
+
+### Estructura de Carpetas
+
+**Monorepo:**
+```
+apps/
+  ├── auth-service/      # .NET 8
+  ├── core-service/      # Spring Boot
+  ├── pantry-service/    # Python FastAPI
+  ├── web-desktop/       # React + Tauri
+  └── mobile/            # Flutter
+packages/
+  └── shared/            # Tipos TypeScript compartidos
+```
+
+### Git Commits
+- Usar **Conventional Commits**: 
+  - `feat: add login endpoint to Auth Service`
+  - `fix: resolve JWT validation issue`
+  - `docs: update README with microservices architecture`
+  - `chore: install Entity Framework packages`
 
 ---
 
