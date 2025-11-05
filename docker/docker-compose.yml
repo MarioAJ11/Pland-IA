@@ -1,0 +1,137 @@
+# Docker Compose para Pland-IA - Arquitectura Microservicios
+# Define todos los servicios del proyecto
+
+version: '3.8'
+
+services:
+  # ============================================
+  # BASE DE DATOS
+  # ============================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: plandaia-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: plandiadb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
+    networks:
+      - plandaia-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # REDIS (CACHE - OPCIONAL)
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: plandaia-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - plandaia-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ============================================
+  # AUTH SERVICE (.NET)
+  # ============================================
+  # Descomenta cuando el servicio esté listo
+  # auth-service:
+  #   build:
+  #     context: ../apps/auth-service
+  #     dockerfile: Dockerfile
+  #   container_name: plandaia-auth-service
+  #   restart: unless-stopped
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=plandiadb;Username=postgres;Password=mysecretpassword;Search Path=auth_schema
+  #     - JwtSettings__Secret=your-super-secret-jwt-key-change-in-production
+  #     - JwtSettings__ExpirationMinutes=15
+  #     - JwtSettings__RefreshExpirationDays=7
+  #   ports:
+  #     - "5001:5001"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   networks:
+  #     - plandaia-network
+
+  # ============================================
+  # CORE SERVICE (SPRING BOOT)
+  # ============================================
+  # Descomenta cuando el servicio esté listo
+  # core-service:
+  #   build:
+  #     context: ../apps/core-service
+  #     dockerfile: Dockerfile
+  #   container_name: plandaia-core-service
+  #   restart: unless-stopped
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=docker
+  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/plandiadb?currentSchema=core_schema
+  #     - SPRING_DATASOURCE_USERNAME=postgres
+  #     - SPRING_DATASOURCE_PASSWORD=mysecretpassword
+  #     - AUTH_SERVICE_URL=http://auth-service:5001
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     auth-service:
+  #       condition: service_started
+  #   networks:
+  #     - plandaia-network
+
+  # ============================================
+  # PANTRY/IA SERVICE (PYTHON FASTAPI)
+  # ============================================
+  # Descomenta cuando el servicio esté listo
+  # pantry-service:
+  #   build:
+  #     context: ../apps/pantry-service
+  #     dockerfile: Dockerfile
+  #   container_name: plandaia-pantry-service
+  #   restart: unless-stopped
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:mysecretpassword@postgres:5432/plandiadb?options=-c%20search_path=pantry_schema
+  #     - OPENAI_API_KEY=${OPENAI_API_KEY}
+  #     - AUTH_SERVICE_URL=http://auth-service:5001
+  #     - REDIS_URL=redis://redis:6379
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #     auth-service:
+  #       condition: service_started
+  #   networks:
+  #     - plandaia-network
+
+# ============================================
+# NETWORKS
+# ============================================
+networks:
+  plandaia-network:
+    driver: bridge
+
+# ============================================
+# VOLUMES
+# ============================================
+volumes:
+  postgres_data:
+    driver: local

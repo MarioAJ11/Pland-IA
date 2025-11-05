@@ -8,18 +8,38 @@ Mi objetivo principal al usar Copilot es **aprender y practicar**. No busco que 
 
 ### ✅ Cómo Quiero que me Ayudes:
 
-1.  **Dame Instrucciones Paso a Paso:** En lugar de código, dime *qué* debo hacer.
-    * *Ejemplo:* "Primero, necesitas crear el controlador. Define una función async llamada `handleCreateUser`. Dentro, usa un bloque try-catch..."
-2.  **Guíame en la Estructura:** "Para esta feature, te sugiero crear un nuevo servicio en `backend/src/services/pantry.service.ts` que se encargue de la lógica de negocio."
-3.  **Explica Conceptos:** Si pido implementar "JWT", explica brevemente qué es, por qué se usa, y luego guíame para instalar `jsonwebtoken` y crear los servicios de token.
-4.  **Proporciona Snippets Pequeños:** Si pido ayuda con una función, dame un "esqueleto" o un ejemplo pequeño y puntual, no la implementación completa.
-5.  **Hazme Preguntas:** "Para el esquema de Dieta, ¿has pensado si un usuario puede tener múltiples dietas? ¿O si las dietas se comparten?"
-6.  **Revisa mi Código (cuando te lo pase):** Si te pego mi código, ayúdame a identificar errores, sugerir refactorizaciones o mejoras de performance.
+1. **Dame Instrucciones Paso a Paso:** En lugar de código, dime *qué* debo hacer.
+   * *Ejemplo:* "Primero, necesitas crear el controlador. Define una función async llamada `handleCreateUser`. Dentro, usa un bloque try-catch..."
+2. **Guíame en la Estructura:** "Para esta feature, te sugiero crear un nuevo servicio en `backend/src/services/pantry.service.ts` que se encargue de la lógica de negocio."
+3. **Explica Conceptos:** Si pido implementar "JWT", explica brevemente qué es, por qué se usa, y luego guíame para instalar `jsonwebtoken` y crear los servicios de token.
+4. **Proporciona Snippets Pequeños:** Si pido ayuda con una función, dame un "esqueleto" o un ejemplo pequeño y puntual, no la implementación completa.
+5. **Hazme Preguntas:** "Para el esquema de Dieta, ¿has pensado si un usuario puede tener múltiples dietas? ¿O si las dietas se comparten?"
+6. **Revisa mi Código (cuando te lo pase):** Si te pego mi código, ayúdame a identificar errores, sugerir refactorizaciones o mejoras de performance.
 
 ### ❌ Evita Esto:
 
 * **Generar Archivos Enteros:** No escribas un controlador, servicio o componente de React completo.
 * **Resolver Tareas Complejas de Golpe:** Si pido "implementar el login", divídelo en pasos (rutas, controlador, servicio, validación).
+
+---
+
+## 📋 Contexto del Proyecto: Pland-IA
+
+### ⚠️ CONCEPTO IMPORTANTE
+
+**Pland-IA NO es solo un planificador de comidas.**
+
+Es un **NOTION SIMPLE** - Un organizador personal completo donde el usuario gestiona TODA su vida:
+- Workspaces (espacios de trabajo)
+- Projects (proyectos)
+- Pages (páginas/documentos/notas tipo Notion)
+- Tasks (tareas con estados, prioridades, fechas)
+
+**La diferencia:** Además de todo lo anterior, tiene una **feature única**: **Despensa Inteligente con IA** (gestión de despensa, dietas con OpenAI, recetas, listas de compra).
+
+**Proporción del proyecto:**
+- **80%:** Planificador personal completo (como Notion, pero SIMPLE)
+- **20%:** Despensa Inteligente (lo que lo hace diferente)
 
 ---
 

@@ -6,13 +6,21 @@
 **Planificador Inteligente "Pland-IA"**
 
 ### Descripción
-Un sistema de productividad personal multiplataforma (Web, Escritorio, Móvil) inspirado en Notion, con una funcionalidad única de "Despensa Inteligente". El sistema permite a los usuarios gestionar tareas, notas y proyectos, y además planificar sus comidas basándose en dietas predefinidas o generadas por IA, controlando una despensa virtual para generar listas de la compra.
+**Pland-IA** es un **planificador personal tipo Notion, pero SIMPLE**. A diferencia de Notion (que es complejo y abrumador), Pland-IA te permite organizar toda tu vida de forma intuitiva: proyectos, tareas, notas, documentos, metas... TODO en un solo lugar.
+
+**La diferencia clave:** Además de ser tu organizador personal, incluye una funcionalidad única y práctica: **Despensa Inteligente con IA**. Puedes gestionar tu despensa, generar dietas personalizadas con OpenAI, recibir sugerencias de recetas según lo que tienes en casa, y crear listas de compra automáticas.
+
+**En resumen:** 
+- 📋 **80% Planificador Personal** (como Notion, pero fácil de usar)
+- 🍽️ **20% Despensa Inteligente** (la feature única que lo diferencia)
 
 ### Objetivos Principales
-1.  **Desarrollar un producto Full-Stack completo** y multiplataforma para portafolio.
-2.  **Integrar IA (OpenAI)** para funcionalidades útiles (generación de dietas, sugerencias de recetas, listas de la compra).
-3.  **Crear una experiencia de usuario fluida** y unificada entre la web, el escritorio y el móvil.
-4.  **Dominar el flujo de trabajo** con TypeScript, React, Node.js, Flutter y Prisma en un entorno Monorepo.
+
+1. **Desarrollar un producto Full-Stack completo** y multiplataforma para portafolio.
+2. **Crear un Notion SIMPLE y usable** - Que cualquiera pueda organizarse sin complejidad.
+3. **Integrar IA de forma práctica** - Despensa Inteligente como feature diferenciadora.
+4. **Dominar múltiples tecnologías** - .NET, Spring Boot, Python, React, Flutter en Monorepo.
+5. **Demostrar arquitectura de microservicios** - Backend modular y escalable.
 
 ---
 

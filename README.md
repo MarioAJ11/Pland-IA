@@ -29,16 +29,28 @@
 
 ## 🎯 Sobre el Proyecto
 
-**Pland-IA** es un sistema de productividad personal full-stack y multiplataforma que combina las capacidades de un gestor de tareas tipo Notion con una funcionalidad única: una **Despensa Inteligente** potenciada por IA.
+**Pland-IA** es un **planificador personal tipo Notion, pero SIMPLE y USABLE**. 
 
-### ¿Qué hace diferente a Pland-IA?
+### ¿Por qué Pland-IA?
 
-Este proyecto te permite:
-- 📝 **Gestionar tareas, notas y proyectos** como en Notion
-- 🍽️ **Planificar tus comidas semanales** con dietas generadas por IA
-- 🛒 **Controlar tu despensa virtual** y generar listas de la compra automáticas
-- 🤖 **Recibir sugerencias de recetas** basadas en lo que tienes disponible
-- 📊 **Optimizar tu alimentación** según tus preferencias, calorías y alergias
+Notion es increíble, pero **demasiado complejo** para el usuario promedio. Pland-IA te da el 80% de la funcionalidad con el 20% de la complejidad:
+
+- 📋 **Organiza toda tu vida:** Workspaces, proyectos, páginas, tareas, notas - TODO en un solo lugar
+- ✨ **Simple e intuitivo:** Sin curva de aprendizaje. Crea, organiza y encuentra rápido
+- 🎯 **Productividad real:** Enfócate en lo importante sin perderte en configuraciones
+
+### 🍽️ El Plus: Despensa Inteligente con IA
+
+Además de ser tu organizador personal, Pland-IA incluye algo único:
+
+- 🤖 **Genera dietas personalizadas** con OpenAI según tus preferencias y calorías
+- 🛒 **Gestiona tu despensa virtual** y crea listas de compra automáticas
+- 🍳 **Recibe sugerencias de recetas** según lo que tienes en casa
+- 📊 **Optimiza tu alimentación** - El planificador que también cuida tu salud
+
+### En resumen:
+
+**Pland-IA = Notion Simple (80%) + Despensa Inteligente con IA (20%)**
 
 ### Objetivos del Proyecto
 
@@ -102,23 +114,46 @@ Este proyecto te permite:
 - **HTTP Client:** `dio` o `http`
 - **Plataformas:** Android (iOS potencialmente)
 
-### Backend (`apps/backend`)
-- **Runtime:** [Node.js](https://nodejs.org/) 18+
-- **Framework:** [Express.js](https://expressjs.com/)
-- **Lenguaje:** TypeScript
-- **ORM:** [Prisma](https://www.prisma.io/)
-- **Validation:** [Zod](https://zod.dev/) (desde `packages/shared`)
+### Backend (Arquitectura de Microservicios)
+
+#### 1. Auth Service (`apps/auth-service`)
+- **Lenguaje:** C# 12
+- **Framework:** [ASP.NET Core 8](https://learn.microsoft.com/aspnet/core/) Web API
+- **ORM:** [Entity Framework Core](https://learn.microsoft.com/ef/core/)
+- **Base de Datos:** PostgreSQL (schema: `auth_schema`)
+- **Responsabilidad:** Autenticación JWT, Gestión de usuarios
+- **Puerto:** 5001
+
+#### 2. Core Service (`apps/core-service`)
+- **Lenguaje:** Java 17+
+- **Framework:** [Spring Boot 3.x](https://spring.io/projects/spring-boot)
+- **ORM:** Spring Data JPA (Hibernate)
+- **Base de Datos:** PostgreSQL (schema: `core_schema`)
+- **Responsabilidad:** Workspaces, Projects, Pages, Tasks
+- **Puerto:** 8080
+
+#### 3. Pantry/IA Service (`apps/pantry-service`)
+- **Lenguaje:** Python 3.11+
+- **Framework:** [FastAPI](https://fastapi.tiangolo.com/)
+- **ORM:** [SQLAlchemy 2.0](https://www.sqlalchemy.org/)
+- **Base de Datos:** PostgreSQL (schema: `pantry_schema`)
+- **IA:** [OpenAI API](https://platform.openai.com/docs) (GPT-4)
+- **Responsabilidad:** Despensa, Dietas con IA, Recetas, Listas de compra
+- **Puerto:** 8000
 - **Auth:** JWT (Access + Refresh Tokens)
 
 ### Base de Datos
 - **Motor:** [PostgreSQL](https://www.postgresql.org/) 15+
-- **Migraciones:** Prisma Migrate
+- **Schemas:** Separados por servicio (`auth_schema`, `core_schema`, `pantry_schema`)
+- **Migraciones:** 
+  - Entity Framework Migrations (.NET)
+  - Flyway/Liquibase (Spring Boot)
+  - Alembic (Python FastAPI)
 - **Local:** Docker para desarrollo
 
 ### Código Compartido (`packages/shared`)
-- **Tipos TypeScript:** Interfaces de User, Task, Diet, Recipe, etc.
-- **Validación:** Esquemas Zod compartidos entre frontend y backend
-- **Utilidades:** Funciones reutilizables
+- **Tipos TypeScript:** Interfaces compartidas para Web frontend
+- **Utilidades:** Funciones helper reutilizables
 
 ### Inteligencia Artificial
 - **Provider:** [OpenAI](https://openai.com/) GPT-4 / GPT-3.5
@@ -139,13 +174,21 @@ Este proyecto te permite:
 Antes de comenzar, asegúrate de tener instalado:
 
 ### Esenciales
-- **Node.js** >= 18.0.0
+- **Node.js** >= 18.0.0 (para Web frontend y tooling)
 - **pnpm** >= 8.0.0 (gestor de paquetes del monorepo)
 - **Git**
 - **Docker Desktop** (para PostgreSQL)
+
+### Backend Services
+- **.NET SDK 8** (para Auth Service)
+- **Java JDK 17+** (para Core Service - Spring Boot)
+- **Python 3.11+** (para Pantry/IA Service)
+- **Maven** o **Gradle** (para gestión de dependencias Java)
+
+### API Keys
 - **Cuenta API OpenAI** (para funcionalidades de IA)
 
-### Opcionales (según plataforma)
+### Opcionales (según plataforma de desarrollo)
 - **Rust + Tauri CLI** (para desarrollo desktop)
 - **Flutter SDK** (para desarrollo móvil)
 - **Android Studio** (para emulador móvil)
@@ -154,6 +197,9 @@ Antes de comenzar, asegúrate de tener instalado:
 ```bash
 node --version          # v18.0.0+
 pnpm --version          # 8.0.0+
+dotnet --version        # 8.x.x
+java --version          # 17+
+python --version        # 3.11+
 git --version
 docker --version
 ```
@@ -281,76 +327,92 @@ flutter run
 
 ---
 
-## 📁 Estructura del Proyecto (Monorepo)
+## 📁 Estructura del Proyecto (Monorepo Microservicios)
 
 ```
-Pland-IA/
-├── apps/
-│   ├── backend/                 # API Node.js + Express
-│   │   ├── src/
-│   │   │   ├── controllers/     # Controladores de rutas
-│   │   │   ├── services/        # Lógica de negocio
-│   │   │   ├── routes/          # Definición de rutas
-│   │   │   ├── middleware/      # Middleware custom
-│   │   │   ├── utils/           # Utilidades
-│   │   │   ├── config/          # Configuraciones
-│   │   │   ├── types/           # TypeScript types
-│   │   │   ├── validators/      # Schemas de validación
-│   │   │   └── index.ts         # Entry point
-│   │   ├── prisma/
-│   │   │   ├── schema.prisma    # Esquema de BD
-│   │   │   ├── migrations/      # Migraciones
-│   │   │   └── seed.ts          # Seed data
-│   │   ├── tests/               # Tests
-│   │   ├── .env                 # Variables de entorno
-│   │   └── package.json
+Pland-IA/                           # Raíz del monorepo
+├── .github/                        # Configuración de GitHub
+│   ├── copilot-instructions.md    # Instrucciones para GitHub Copilot
+│   ├── PLANNING_COMPLETO.md       # 📅 Planning detallado de 12 semanas
+│   ├── PROJECT_CONTEXT.md         # Contexto completo del proyecto
+│   └── ROADMAP.md                 # Roadmap de desarrollo
+│
+├── apps/                           # Aplicaciones ejecutables
+│   ├── auth-service/              # 🔐 Servicio de Autenticación (.NET 8)
+│   │   ├── Controllers/
+│   │   ├── Services/
+│   │   ├── Models/
+│   │   │   ├── Entities/         # Entidades de BD
+│   │   │   └── DTOs/             # Data Transfer Objects
+│   │   ├── Data/
+│   │   │   └── AppDbContext.cs   # Entity Framework DbContext
+│   │   ├── Middleware/
+│   │   ├── appsettings.json
+│   │   └── Program.cs            # Entry point
 │   │
-│   ├── web-desktop/             # Frontend React + Tauri
-│   │   ├── src/
-│   │   │   ├── components/      # Componentes React
-│   │   │   │   ├── ui/          # Componentes UI base
-│   │   │   │   ├── layout/      # Layouts
-│   │   │   │   └── features/    # Features específicas
-│   │   │   ├── pages/           # Páginas/Rutas
-│   │   │   ├── services/        # Servicios API
-│   │   │   ├── hooks/           # Custom hooks
-│   │   │   ├── store/           # Zustand store
-│   │   │   ├── utils/           # Utilidades
-│   │   │   ├── types/           # TypeScript types
-│   │   │   ├── App.tsx
-│   │   │   └── main.tsx
-│   │   ├── src-tauri/           # Código Rust de Tauri
-│   │   ├── public/              # Assets estáticos
-│   │   └── package.json
+│   ├── core-service/              # 📋 Servicio Core (Spring Boot)
+│   │   └── src/main/java/com/plandaia/core/
+│   │       ├── controller/
+│   │       ├── service/
+│   │       ├── repository/
+│   │       ├── model/
+│   │       │   ├── entity/       # JPA Entities
+│   │       │   └── dto/          # DTOs
+│   │       ├── config/           # Configuración Spring
+│   │       ├── exception/        # Exception handlers
+│   │       ├── security/         # Security config
+│   │       └── CoreServiceApplication.java
 │   │
-│   └── mobile/                  # App Flutter
+│   ├── pantry-service/            # 🍽️ Servicio Despensa/IA (Python)
+│   │   ├── app/
+│   │   │   ├── main.py           # FastAPI app
+│   │   │   ├── config.py
+│   │   │   ├── database.py       # SQLAlchemy setup
+│   │   │   ├── models/           # SQLAlchemy models
+│   │   │   ├── schemas/          # Pydantic schemas
+│   │   │   ├── routers/          # API routes
+│   │   │   ├── services/
+│   │   │   │   └── ai_service.py # OpenAI integration
+│   │   │   └── middleware/
+│   │   ├── tests/
+│   │   ├── requirements.txt
+│   │   └── .env
+│   │
+│   ├── web-desktop/               # 🌐 Frontend Web (React + Tauri)
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   ├── pages/
+│   │   │   ├── services/         # API calls a los 3 backends
+│   │   │   ├── stores/           # Zustand state
+│   │   │   ├── hooks/
+│   │   │   ├── types/
+│   │   │   └── App.tsx
+│   │   ├── src-tauri/            # Tauri (Rust)
+│   │   ├── package.json
+│   │   └── vite.config.ts
+│   │
+│   └── mobile/                    # 📱 App Móvil (Flutter)
 │       ├── lib/
-│       │   ├── models/          # Modelos de datos
-│       │   ├── services/        # Servicios API
-│       │   ├── providers/       # State management
-│       │   ├── screens/         # Pantallas
-│       │   ├── widgets/         # Widgets reutilizables
+│       │   ├── screens/
+│       │   ├── widgets/
+│       │   ├── services/
+│       │   ├── providers/        # Riverpod
 │       │   └── main.dart
-│       ├── android/             # Config Android
-│       ├── ios/                 # Config iOS
 │       └── pubspec.yaml
 │
-├── packages/
-│   └── shared/                  # Código compartido
-│       ├── src/
-│       │   ├── types/           # Interfaces TypeScript
-│       │   ├── validators/      # Esquemas Zod
-│       │   └── utils/           # Utilidades compartidas
-│       └── package.json
+├── packages/                       # Código compartido
+│   └── shared/                    # Tipos TypeScript compartidos (opcional)
+│       ├── types/
+│       └── utils/
 │
-├── .github/
-│   ├── copilot-instructions.md  # Instrucciones para Copilot
-│   ├── PROJECT_CONTEXT.md       # Contexto del proyecto
-│   └── ROADMAP.md               # Plan de desarrollo
+├── docker/                         # Docker setup
+│   ├── docker-compose.yml         # Orquestación de todos los servicios
+│   └── postgres-init/             # Scripts de inicialización de BD
+│       └── init.sql               # Crear schemas separados
 │
-├── pnpm-workspace.yaml          # Configuración del monorepo
-├── package.json                 # Root package.json
-└── README.md                    # Este archivo
+├── pnpm-workspace.yaml            # Configuración del monorepo
+├── package.json                   # Dependencias raíz
+└── README.md                      # Este archivo
 ```
 │   │   ├── middleware/          # Middleware custom
 │   │   ├── utils/               # Utilidades
