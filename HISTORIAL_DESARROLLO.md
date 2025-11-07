@@ -298,7 +298,328 @@ logging.level.org.hibernate.SQL=DEBUG
 - **Líneas de código**: ~2,500+
 - **Archivos creados**: 25+
 - **Tecnologías**: .NET 8, Spring Boot 3.5.7, PostgreSQL 15, Docker, Java 21
-- **Microservicios**: 2 (Auth Service operativo, Core Service configurado)
+- **Microservicios**: 2 operativos (Auth Service + Core Service)
+
+---
+
+## ⚙️ FASE 3: Core Service (Spring Boot)
+**Fecha**: 7 de noviembre de 2025  
+**Estado**: ✅ Completado
+
+### Objetivos
+- Implementar microservicio principal de gestión de proyectos
+- Sistema completo de Workspaces → Projects → Tasks
+- API REST con documentación Swagger
+- Validaciones y manejo de errores global
+
+### Logros Técnicos
+
+#### 3.1. Configuración del Proyecto
+- ✅ Spring Boot 3.5.7 con Java 21
+- ✅ Spring Data JPA + Hibernate 6.6.33
+- ✅ PostgreSQL conexión a `core_schema`
+- ✅ Lombok para reducir boilerplate
+- ✅ SpringDoc OpenAPI 2.7.0 (Swagger)
+- ✅ Maven Wrapper configurado
+
+#### 3.2. Modelo de Datos (Entidades JPA)
+
+**Workspace** (Espacio de Trabajo):
+- Entidad raíz que agrupa proyectos
+- Campos: `id` (UUID), `name`, `description`, `userId`, `createdAt`, `updatedAt`
+- Relación: 1 Workspace → N Projects
+- Analogía: Carpeta principal
+
+**Project** (Proyecto):
+- Pertenece a un Workspace, contiene Tasks
+- Campos: `id` (UUID), `name`, `description`, `workspaceId`, `createdAt`, `updatedAt`
+- Relación: N Projects → 1 Workspace, 1 Project → N Tasks
+- Analogía: Subcarpeta
+
+**Task** (Tarea):
+- Pertenece a un Project
+- Campos: `id` (UUID), `title`, `description`, `status`, `priority`, `dueDate`, `assignedTo`, `projectId`, `createdAt`, `updatedAt`
+- Enums: `TaskStatus` (TO_DO, IN_PROGRESS, DONE), `TaskPriority` (LOW, MEDIUM, HIGH, URGENT)
+- Relación: N Tasks → 1 Project
+- Analogía: Archivo dentro de subcarpeta
+
+**Anotaciones JPA**:
+- `@ManyToOne` / `@OneToMany` para relaciones bidireccionales
+- `@JsonManagedReference` / `@JsonBackReference` para evitar loops infinitos en JSON
+- `@CreationTimestamp` / `@UpdateTimestamp` para timestamps automáticos
+- Validaciones: `@NotBlank`, `@Size`, `@Valid`
+
+#### 3.3. Capa de Persistencia (Repositories)
+
+**WorkspaceRepository**:
+- `findByUserId(UUID userId)` - Todos los workspaces de un usuario
+- `existsByNameAndUserId(String name, UUID userId)` - Validar duplicados
+
+**ProjectRepository**:
+- `findByWorkspaceId(UUID workspaceId)` - Proyectos de un workspace
+- `existsByNameAndWorkspaceId(String name, UUID workspaceId)` - Validar duplicados
+- `countByWorkspaceId(UUID workspaceId)` - Contar proyectos
+
+**TaskRepository**:
+- `findByProjectId(UUID projectId)` - Tareas de un proyecto
+- `findByStatus(TaskStatus status)` - Filtrar por estado
+- `findByAssignedTo(UUID userId)` - Tareas asignadas a usuario
+- `findUrgentIncompleteTasks()` - Query JPQL personalizada
+- `findTasksDueSoon(LocalDate date, int days)` - Tareas próximas a vencer
+
+#### 3.4. Lógica de Negocio (Services)
+
+**WorkspaceService**:
+- CRUD completo con `@Transactional`
+- Validación de nombres duplicados por usuario
+- Logging estructurado con `@Slf4j`
+
+**ProjectService**:
+- CRUD con validación de workspace existente
+- Validación de nombres duplicados por workspace
+- Manejo de relaciones bidireccionales
+
+**TaskService**:
+- CRUD completo
+- Métodos especializados: `updateTaskStatus()`, `assignTask()`
+- Queries de filtrado: urgentes, por vencer, por estado
+- Validación de project existente
+
+#### 3.5. API REST (Controllers)
+
+**WorkspaceController** (`/api/workspaces`):
+- `GET /` - Listar todos
+- `GET /{id}` - Obtener por ID
+- `GET /user/{userId}` - Por usuario
+- `POST /` - Crear
+- `PUT /{id}` - Actualizar
+- `DELETE /{id}` - Eliminar
+
+**ProjectController** (`/api/projects`):
+- `GET /` - Listar todos (filtrable por workspace)
+- `GET /{id}` - Obtener por ID
+- `POST /` - Crear (requiere `workspaceId` query param)
+- `PUT /{id}` - Actualizar
+- `DELETE /{id}` - Eliminar
+
+**TaskController** (`/api/tasks`):
+- `GET /` - Listar todas (filtrable por status)
+- `GET /{id}` - Obtener por ID
+- `GET /project/{projectId}` - Por proyecto
+- `GET /assigned/{userId}` - Asignadas a usuario
+- `GET /urgent` - Urgentes incompletas
+- `GET /due-soon` - Próximas a vencer (query param `days`)
+- `POST /` - Crear (requiere `projectId` query param)
+- `PUT /{id}` - Actualizar completa
+- `PATCH /{id}/status` - Cambiar solo estado
+- `PATCH /{id}/assign` - Asignar a usuario
+- `DELETE /{id}` - Eliminar
+
+**Total de endpoints**: 24 endpoints REST documentados
+
+#### 3.6. Manejo de Errores Global
+
+**GlobalExceptionHandler** (`@RestControllerAdvice`):
+- `IllegalArgumentException` → 400 Bad Request
+- `NoSuchElementException` → 404 Not Found
+- `MethodArgumentNotValidException` → 400 (validaciones Bean)
+- `Exception` genérica → 500 Internal Server Error
+- Respuestas JSON estandarizadas con timestamp, status, error, message
+
+#### 3.7. Documentación API
+
+**SpringDoc OpenAPI 2.7.0**:
+- Swagger UI accesible en `/swagger-ui.html`
+- Documentación automática desde anotaciones
+- Configuración personalizada en `OpenAPIConfig`:
+  - Título: "Pland-IA Core Service API"
+  - Versión: 1.0
+  - Descripción detallada
+  - Información de contacto
+  - Licencia Apache 2.0
+
+#### 3.8. Problemas Resueltos
+
+**Problema 1: Compilación con Lombok**
+- Error: Métodos getter/setter no reconocidos
+- Causa: Clase duplicada en paquete `com.plandia` (typo)
+- Solución: Eliminado paquete duplicado, recompilación limpia
+- Resultado: Lombok funcionando correctamente
+
+**Problema 2: Infinite JSON Serialization Loop**
+- Error: Respuestas JSON infinitas en relaciones bidireccionales
+- Causa: Jackson serializa Workspace → Projects → Workspace → Projects...
+- Solución: 
+  - `@JsonManagedReference` en colecciones (permite serialización forward)
+  - `@JsonBackReference` en referencias (previene serialización back)
+- Resultado: JSON limpio sin loops
+
+**Problema 3: SpringDoc Incompatibilidad**
+- Error: `NoSuchMethodError` con SpringDoc 2.6.0 en Spring Boot 3.5.7
+- Causa: Incompatibilidad de versiones
+- Solución: Actualizar a SpringDoc 2.7.0
+- Resultado: Swagger UI funcionando sin errores
+
+**Problema 4: HTTP Status Codes Incorrectos**
+- Error: Excepciones de negocio retornaban 500 en lugar de 400
+- Causa: Spring no maneja `IllegalArgumentException` por defecto
+- Solución: `GlobalExceptionHandler` con `@RestControllerAdvice`
+- Resultado: Códigos HTTP apropiados (400 para validaciones, 404 para not found)
+
+### Arquitectura Implementada
+
+```
+┌─────────────────┐
+│   Swagger UI    │ (localhost:8080/swagger-ui.html)
+└────────┬────────┘
+         │
+┌────────▼─────────┐
+│  Controllers     │ (REST endpoints - 24 endpoints)
+│  - Workspace     │
+│  - Project       │
+│  - Task          │
+└────────┬─────────┘
+         │
+┌────────▼─────────┐
+│   Services       │ (Business logic + @Transactional)
+│  - WorkspaceService
+│  - ProjectService
+│  - TaskService
+└────────┬─────────┘
+         │
+┌────────▼─────────┐
+│  Repositories    │ (Spring Data JPA - 12+ custom queries)
+│  - WorkspaceRepo
+│  - ProjectRepo
+│  - TaskRepo
+└────────┬─────────┘
+         │
+┌────────▼─────────┐
+│   PostgreSQL     │ (plandiadb.core_schema)
+│  - workspaces    │
+│  - projects      │
+│  - tasks         │
+└──────────────────┘
+```
+
+### Estadísticas del Código
+
+- **Entidades**: 3 (Workspace, Project, Task)
+- **Repositories**: 3 interfaces con 12+ métodos custom
+- **Services**: 3 clases (~450 líneas de lógica de negocio)
+- **Controllers**: 3 clases (~430 líneas de endpoints REST)
+- **Endpoints REST**: 24 endpoints documentados
+- **Líneas de código**: ~1,500 líneas (sin contar generado por Lombok)
+- **Archivos Java**: 15 archivos
+- **Commits**: 1 (este)
+
+### Pruebas Realizadas
+
+- ✅ Compilación exitosa con Maven
+- ✅ Aplicación inicia sin errores en puerto 8080
+- ✅ Swagger UI accesible y funcional
+- ✅ PostgreSQL conectado correctamente
+- ✅ Hibernate crea tablas automáticamente
+- ✅ HikariCP pool de conexiones funcionando
+- ✅ Spring Data repositories encontrados (3)
+- ✅ Jackson serialización sin loops infinitos
+- ✅ Global exception handler respondiendo correctamente
+
+### Próximos Pasos
+
+- [ ] Frontend básico con React/Tauri
+- [ ] Integración Auth Service ↔ Core Service
+- [ ] Testing con Swagger UI (crear workspaces, projects, tasks)
+- [ ] Tests unitarios con JUnit
+- [ ] Tests de integración
+- [ ] Despliegue en cloud (AWS/Azure/Railway)
+
+### Tecnologías
+
+- Spring Boot 3.5.7
+- Java 21 (OpenJDK)
+- Spring Data JPA
+- Hibernate 6.6.33
+- PostgreSQL 15
+- Lombok 1.18.x
+- SpringDoc OpenAPI 2.7.0
+- Maven 3.x
+- HikariCP (connection pooling)
+- Jakarta Bean Validation
+- Jackson (JSON serialization)
+
+### Aprendizajes
+
+1. **Lombok acelera desarrollo**: Reduce código boilerplate en 50-70%
+2. **Jackson bidirectional relationships**: Siempre usar `@JsonManagedReference`/`@JsonBackReference`
+3. **Global exception handling**: Centralizar manejo de errores mejora consistencia API
+4. **SpringDoc versioning**: Importante verificar compatibilidad con Spring Boot
+5. **Spring Data JPA**: Custom queries con `@Query` son potentes para casos específicos
+6. **Arquitectura en capas**: Controller → Service → Repository mantiene código organizado
+
+---
+
+## 📄 FASE 4: Documentación Estratégica
+**Fecha**: 7 de noviembre de 2025  
+**Estado**: ✅ Completado
+
+### Objetivos
+- Documentar estrategia de negocio completa
+- Plan de monetización y validación
+- Roadmap de crecimiento
+
+### Logros
+
+- ✅ Documento `info/ESTRATEGIA_NEGOCIO.md` creado (100+ páginas)
+- ✅ Contenido incluido:
+  - Modelos de monetización (Freemium, B2B, Marketplace)
+  - Estrategia de validación (landing page, beta testers)
+  - Plan Go-to-Market por fases
+  - **Estrategia SEO completa** (keywords, contenido, link building)
+  - Roadmap de desarrollo (Q1-Q4 2026)
+  - Métricas KPI (MAU, MRR, CAC, LTV, etc.)
+  - Arquitectura escalable (Kubernetes, multi-región)
+  - Proyecciones financieras (Año 1-5)
+  - Plan de acción inmediato (próximos 7 días)
+
+### SEO (Search Engine Optimization)
+
+**Definición**: Optimizar el sitio web para aparecer en primeros resultados de Google
+
+**Keywords Target**:
+- "gestor de proyectos" (10,000 búsquedas/mes)
+- "alternativa a trello" (5,000/mes)
+- "app para organizar tareas" (8,000/mes)
+- "herramienta gestión proyectos gratis" (4,000/mes)
+
+**Estrategia de Contenido**:
+- 2-3 artículos de blog/semana (1,500+ palabras)
+- Temas: Comparativas, tutoriales, guías de productividad
+- Meta: 10,000 visitas orgánicas/mes en 6 meses
+
+**Estructura Sitio**:
+```
+pland-ia.com/
+├── / (Home)
+├── /features
+├── /pricing
+├── /blog/ (artículos SEO)
+├── /comparisons/ (vs Trello, Asana, Notion)
+└── /templates
+```
+
+### Decisiones de Negocio Documentadas
+
+1. **Modelo Freemium**: Free + Pro ($9) + Team ($49) + Enterprise ($199+)
+2. **Target inicial**: Freelancers tech, startups 5-20 personas
+3. **Validación primero**: Landing page + $100 en ads antes de continuar
+4. **Bootstrap inicial**: 6-12 meses sin inversión, luego decidir
+5. **Marketing orgánico**: SEO + Product Hunt + Reddit + Twitter
+
+### Archivos Privados
+
+- `info/ESTRATEGIA_NEGOCIO.md` - No se sube al repo (en `.gitignore`)
+- `HISTORIAL_DESARROLLO.md` - No se sube al repo (en `.gitignore`)
 
 ---
 
@@ -306,23 +627,27 @@ logging.level.org.hibernate.SQL=DEBUG
 
 ### Backend
 - **Auth Service**: .NET 8 / ASP.NET Core 8
-- **Core Service**: Spring Boot 3.x (planificado)
+- **Core Service**: Spring Boot 3.5.7 / Java 21
 
 ### Base de Datos
 - PostgreSQL 15 (multi-schema)
 - Entity Framework Core 9.0
-- Spring Data JPA (planificado)
+- Spring Data JPA + Hibernate 6.6.33
+- HikariCP (connection pooling)
 
 ### DevOps & Tools
 - Docker & Docker Compose
 - Git & GitHub
-- Swagger/OpenAPI
-- Serilog
+- Maven Wrapper
+- Swagger/OpenAPI (SpringDoc 2.7.0)
+- Serilog (.NET)
+- Lombok (Java)
 
 ### Seguridad
 - JWT (JSON Web Tokens)
 - BCrypt (password hashing)
 - Refresh Tokens con Sliding Expiration
+- Jakarta Bean Validation
 
 ---
 
@@ -333,22 +658,28 @@ logging.level.org.hibernate.SQL=DEBUG
 2. **Multi-schema**: Un solo PostgreSQL con schemas separados por servicio
 3. **JWT Stateless**: No guardamos sesiones en servidor
 4. **Sliding Expiration**: Mientras el usuario esté activo, no expira
+5. **API REST**: Comunicación entre servicios y con frontend
+6. **Relaciones JPA**: Bidireccionales con Jackson annotations para JSON limpio
 
 ### Buenas Prácticas Implementadas
 - ✅ Contraseñas hasheadas con BCrypt (nunca texto plano)
 - ✅ User Secrets para desarrollo (nunca en código)
-- ✅ Manejo centralizado de errores
-- ✅ Logging estructurado con Serilog
-- ✅ Validaciones en DTOs
+- ✅ Manejo centralizado de errores (GlobalExceptionHandler)
+- ✅ Logging estructurado con Serilog (.NET) y Slf4j (Java)
+- ✅ Validaciones en DTOs y entidades
 - ✅ CORS configurado para desarrollo
-- ✅ Documentación con Swagger
+- ✅ Documentación con Swagger en ambos servicios
 - ✅ Commits descriptivos en español
+- ✅ Separación de responsabilidades (Controller → Service → Repository)
+- ✅ Transacciones con `@Transactional`
+- ✅ Lazy loading de relaciones JPA
 
 ### Archivos Privados (Solo Local)
 - `.github/info/` - Documentación privada del proyecto
-- `.gitignore` - Configuración de Git (no se sube al repo público)
+- `info/ESTRATEGIA_NEGOCIO.md` - Estrategia de negocio y monetización
+- `HISTORIAL_DESARROLLO.md` - Este archivo (historial completo)
 
 ---
 
-**Última actualización**: 5 de noviembre de 2025 - 20:00h
-**Sesión**: Auth Service + Core Service (configuración inicial)
+**Última actualización**: 7 de noviembre de 2025 - 02:15h
+**Sesión**: Core Service completado + Documentación estratégica

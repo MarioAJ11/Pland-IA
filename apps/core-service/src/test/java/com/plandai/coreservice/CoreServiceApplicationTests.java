@@ -1,4 +1,4 @@
-package com.plandia.core_service;
+package com.plandai.coreservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
