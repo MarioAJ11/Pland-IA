@@ -1,6 +1,7 @@
 package com.plandai.coreservice.controllers;
 
 import com.plandai.coreservice.entities.Workspace;
+import com.plandai.coreservice.security.AuthenticatedUserHelper;
 import com.plandai.coreservice.services.WorkspaceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,11 @@ import java.util.UUID;
  * - Tauri Desktop (puerto 1420)
  * - React Web (puerto 3000/5173)
  * - App Móvil (futuro)
- * - Swagger UI (testing)
- * - Postman (testing)
+ * - Swagger UI (testing - requiere Bearer token)
+ * - Postman (testing - requiere Bearer token)
+ * 
+ * NOTA: Todos los endpoints requieren autenticación JWT (excepto Swagger UI)
+ * El userId se extrae automáticamente del token JWT
  * 
  * @RestController: Combina @Controller + @ResponseBody (respuestas JSON automáticas)
  * @RequestMapping: Define la ruta base (/api/workspaces)
@@ -33,24 +37,22 @@ import java.util.UUID;
 public class WorkspaceController {
 
     private final WorkspaceService workspaceService;
+    private final AuthenticatedUserHelper authHelper;
 
     /**
      * GET /api/workspaces
-     * Obtiene todos los workspaces (admin) o filtrados por usuario.
+     * Obtiene todos los workspaces del usuario autenticado.
      * 
      * Ejemplo: GET http://localhost:8080/api/workspaces
+     * Header: Authorization: Bearer <jwt-token>
      * Respuesta: [{"id": "uuid", "name": "Trabajo", ...}, ...]
      */
     @GetMapping
-    public ResponseEntity<List<Workspace>> getAllWorkspaces(
-            @RequestParam(required = false) UUID userId
-    ) {
-        log.info("📥 GET /api/workspaces - userId: {}", userId);
+    public ResponseEntity<List<Workspace>> getAllWorkspaces() {
+        UUID userId = authHelper.getCurrentUserId();
+        log.info("📥 GET /api/workspaces - userId extraído del JWT: {}", userId);
 
-        List<Workspace> workspaces = userId != null
-                ? workspaceService.getWorkspacesByUserId(userId)
-                : workspaceService.getAllWorkspaces();
-
+        List<Workspace> workspaces = workspaceService.getWorkspacesByUserId(userId);
         return ResponseEntity.ok(workspaces);
     }
 
@@ -72,11 +74,14 @@ public class WorkspaceController {
 
     /**
      * POST /api/workspaces
-     * Crea un nuevo workspace.
+     * Crea un nuevo workspace para el usuario autenticado.
      * 
      * Ejemplo: POST http://localhost:8080/api/workspaces
-     * Body: {"name": "Trabajo Personal", "description": "...", "userId": "uuid"}
+     * Header: Authorization: Bearer <jwt-token>
+     * Body: {"name": "Trabajo Personal", "description": "..."}
      * Respuesta: 201 Created + {"id": "uuid-generado", ...}
+     * 
+     * NOTA: El userId se extrae automáticamente del JWT, no del body
      * 
      * @RequestBody: Lee el JSON del body y lo convierte a Workspace
      * @Valid: Activa validaciones (@NotBlank, @Size, etc.)
@@ -84,7 +89,12 @@ public class WorkspaceController {
      */
     @PostMapping
     public ResponseEntity<Workspace> createWorkspace(@Valid @RequestBody Workspace workspace) {
-        log.info("📥 POST /api/workspaces - name: {}", workspace.getName());
+        UUID userId = authHelper.getCurrentUserId();
+        log.info("📥 POST /api/workspaces - name: {}, userId: {}", workspace.getName(), userId);
+        
+        // Forzar userId del JWT (ignorar cualquier userId en el body)
+        workspace.setUserId(userId);
+        
         Workspace created = workspaceService.createWorkspace(workspace);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
