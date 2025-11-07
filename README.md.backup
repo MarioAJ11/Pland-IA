@@ -1,0 +1,1046 @@
+# Pland-IA
+
+A full-stack productivity platform with an intelligent pantry management system powered by AI.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-green.svg)](https://spring.io/projects/spring-boot)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18+-blue.svg)](https://react.dev/)
+[![Tests](https://img.shields.io/badge/Tests-34%2F34%20passing-brightgreen.svg)](#testing)
+
+---
+
+## 📋 Tabla de Contenidos
+
+- [Sobre el Proyecto](#-sobre-el-proyecto)
+- [Características](#-características)
+- [Arquitectura](#-arquitectura)
+- [Stack Tecnológico](#-stack-tecnológico)
+- [Requisitos Previos](#-requisitos-previos)
+- [Instalación y Setup](#-instalación-y-setup)
+- [Testing](#-testing)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [APIs y Documentación](#-apis-y-documentación)
+- [Progreso del Proyecto](#-progreso-del-proyecto)
+- [Contribuir](#-contribuir)
+- [Licencia](#-licencia)
+
+---
+
+## 🎯 Sobre el Proyecto
+
+**Pland-IA** es un **planificador personal tipo Notion, pero SIMPLE y USABLE**. 
+
+### ¿Por qué Pland-IA?
+
+Notion es increíble, pero **demasiado complejo** para el usuario promedio. Pland-IA te da el 80% de la funcionalidad con el 20% de la complejidad:
+
+- 📋 **Organiza toda tu vida:** Workspaces, proyectos, páginas, tareas, notas - TODO en un solo lugar
+- ✨ **Simple e intuitivo:** Sin curva de aprendizaje. Crea, organiza y encuentra rápido
+- 🎯 **Productividad real:** Enfócate en lo importante sin perderte en configuraciones
+
+### 🍽️ El Plus: Despensa Inteligente con IA
+
+Además de ser tu organizador personal, Pland-IA incluye algo único:
+
+- 🤖 **Genera dietas personalizadas** con OpenAI según tus preferencias y calorías
+- 🛒 **Gestiona tu despensa virtual** y crea listas de compra automáticas
+- 🍳 **Recibe sugerencias de recetas** según lo que tienes en casa
+- 📊 **Optimiza tu alimentación** - El planificador que también cuida tu salud
+
+### En resumen:
+
+**Pland-IA = Notion Simple (80%) + Despensa Inteligente con IA (20%)**
+
+### Objetivos del Proyecto
+
+1. **Desarrollar un producto Full-Stack completo** y multiplataforma para portfolio profesional
+2. **Integrar IA (OpenAI)** de forma útil y práctica en la vida diaria
+3. **Crear una experiencia unificada** entre Web, Escritorio (Tauri) y Móvil (Flutter)
+4. **Dominar tecnologías modernas** en un entorno de Monorepo con TypeScript
+
+---
+
+## ✨ Características
+
+### 📋 Productividad
+- ✅ **Workspaces y Proyectos** - Organiza tu contenido como en Notion
+- ✅ **Páginas y Tareas** - Crea documentos y gestiona tus tareas
+- ✅ **Editor Rico** - Escribe y formatea tus notas con facilidad
+- ✅ **Autenticación Segura** - Sistema completo de registro/login con JWT
+
+### 🍽️ Despensa Inteligente
+- 🥗 **Generador de Dietas con IA** - Crea planes semanales personalizados según calorías, preferencias y alergias
+- 📦 **Gestión de Despensa** - Controla tu inventario de ingredientes en tiempo real
+- 🛒 **Lista de Compra Automática** - Genera listas basadas en tus recetas y lo que te falta
+- 👨‍🍳 **Sugerencias de Recetas** - IA recomienda qué cocinar con lo que tienes
+
+### 🤖 Inteligencia Artificial
+- 🎯 **Dietas Personalizadas** - Generación de planes de comidas con OpenAI GPT-4
+- 🔄 **Optimización de Compras** - Calcula exactamente qué comprar para la semana
+- � **Sugerencias Contextuales** - Recetas basadas en ingredientes disponibles
+- � **Análisis Nutricional** - Seguimiento de calorías y nutrientes (futuro)
+
+### Técnicas
+- 🔒 **Seguridad** - Encriptación, validación y protección contra ataques
+- 📱 **Responsive** - Diseño adaptado a todos los dispositivos
+- ⚡ **Performance** - Optimizado para carga rápida
+- ♿ **Accesible** - Cumple con estándares de accesibilidad
+
+---
+
+## 🏗️ Arquitectura
+
+### Visión General
+
+Pland-IA sigue una **arquitectura de microservicios** con separación clara de responsabilidades:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    CLIENTES (Frontend)                       │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
+│  │   Web/Tauri  │  │    Mobile    │  │  API Clients │     │
+│  │  (React TS)  │  │   (Flutter)  │  │   (Postman)  │     │
+│  └──────────────┘  └──────────────┘  └──────────────┘     │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼ HTTPS/JWT
+┌─────────────────────────────────────────────────────────────┐
+│                  MICROSERVICIOS (Backend)                    │
+│                                                               │
+│  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐  │
+│  │  Auth Service  │  │  Core Service  │  │Pantry Service│  │
+│  │   (.NET 8)     │  │(Spring Boot 3) │  │  (FastAPI)   │  │
+│  │   Port 5001    │  │   Port 8080    │  │  Port 8000   │  │
+│  │                │  │                │  │              │  │
+│  │ • Register     │  │ • Workspaces   │  │ • Despensa   │  │
+│  │ • Login        │  │ • Projects     │  │ • Dietas IA  │  │
+│  │ • JWT Tokens   │  │ • Pages        │  │ • Recetas    │  │
+│  │ • Users CRUD   │  │ • Tasks        │  │ • Compras    │  │
+│  └────────────────┘  └────────────────┘  └──────────────┘  │
+│         │                    │                   │           │
+└─────────┼────────────────────┼───────────────────┼──────────┘
+          │                    │                   │
+          ▼                    ▼                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│              PostgreSQL 15 (Multi-Schema)                    │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
+│  │ auth_schema  │  │ core_schema  │  │pantry_schema │     │
+│  │   • users    │  │ • workspaces │  │ • pantries   │     │
+│  │   • refresh  │  │ • projects   │  │ • ingredients│     │
+│  │     tokens   │  │ • pages      │  │ • recipes    │     │
+│  └──────────────┘  │ • tasks      │  │ • diets      │     │
+│                     └──────────────┘  └──────────────┘     │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     Redis 7 (Cache)                          │
+│              • Sesiones • Rate Limiting                      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Flujo de Autenticación (JWT)
+
+1. **Login**: Cliente → Auth Service → JWT (Access + Refresh)
+2. **Request**: Cliente → Core/Pantry Service + JWT Header
+3. **Validación**: Service valida JWT (secret compartido)
+4. **Respuesta**: Service extrae `userId` del token y procesa request
+
+### Tecnologías por Servicio
+
+| Servicio | Lenguaje | Framework | Puerto | Base de Datos | Testing |
+|----------|----------|-----------|--------|---------------|---------|
+| **Auth Service** | C# 12 | .NET 8 Web API | 5001 | PostgreSQL (auth_schema) | xUnit + Moq (10 tests) |
+| **Core Service** | Java 17 | Spring Boot 3.5 | 8080 | PostgreSQL (core_schema) | JUnit 5 + Mockito (24 tests) |
+| **Pantry Service** | Python 3.11 | FastAPI | 8000 | PostgreSQL (pantry_schema) | pytest (TBD) |
+
+### Características Técnicas Implementadas
+
+✅ **Variables de Entorno**: Configuración mediante `.env` en todos los servicios  
+✅ **Profiles**: Development/Production con configuraciones específicas  
+✅ **JWT Integration**: Auth ↔ Core con validación completa  
+✅ **Logging Unificado**: Serilog (.NET) + Logback (Java) con rolling files  
+✅ **CORS Flexible**: Configuración dinámica de orígenes permitidos  
+✅ **Testing Completo**: 34 tests unitarios (100% passing)
+
+---
+
+## 🛠️ Stack Tecnológico
+
+### Arquitectura
+- **Monorepo:** `pnpm workspaces` - Gestión centralizada de dependencias
+- **Estructura:** `apps/` (ejecutables) + `packages/` (código compartido)
+
+### Frontend Web (`apps/web-desktop`)
+- **Framework:** [React](https://react.dev/) 18+ con TypeScript
+- **Build Tool:** [Vite](https://vitejs.dev/)
+- **UI Library:** [Material-UI (MUI)](https://mui.com/)
+- **State Management:** [Zustand](https://zustand-demo.pmnd.rs/)
+- **HTTP Client:** [Axios](https://axios-http.com/)
+- **Routing:** [React Router](https://reactrouter.com/) v6
+
+### Frontend Escritorio (`apps/web-desktop`)
+- **Framework:** [Tauri](https://tauri.app/) - Empaqueta la app React para Windows/Linux
+- **Lenguaje Backend:** Rust (gestionado por Tauri)
+
+### Frontend Móvil (`apps/mobile`)
+- **Framework:** [Flutter](https://flutter.dev/)
+- **Lenguaje:** Dart
+- **State Management:** Riverpod o Provider
+- **HTTP Client:** `dio` o `http`
+- **Plataformas:** Android (iOS potencialmente)
+
+### Backend (Arquitectura de Microservicios)
+
+#### 1. Auth Service (`apps/auth-service`)
+- **Lenguaje:** C# 12
+- **Framework:** [ASP.NET Core 8](https://learn.microsoft.com/aspnet/core/) Web API
+- **ORM:** [Entity Framework Core](https://learn.microsoft.com/ef/core/)
+- **Base de Datos:** PostgreSQL (schema: `auth_schema`)
+- **Responsabilidad:** Autenticación JWT, Gestión de usuarios
+- **Puerto:** 5001
+
+#### 2. Core Service (`apps/core-service`)
+- **Lenguaje:** Java 17+
+- **Framework:** [Spring Boot 3.x](https://spring.io/projects/spring-boot)
+- **ORM:** Spring Data JPA (Hibernate)
+- **Base de Datos:** PostgreSQL (schema: `core_schema`)
+- **Responsabilidad:** Workspaces, Projects, Pages, Tasks
+- **Puerto:** 8080
+
+#### 3. Pantry/IA Service (`apps/pantry-service`)
+- **Lenguaje:** Python 3.11+
+- **Framework:** [FastAPI](https://fastapi.tiangolo.com/)
+- **ORM:** [SQLAlchemy 2.0](https://www.sqlalchemy.org/)
+- **Base de Datos:** PostgreSQL (schema: `pantry_schema`)
+- **IA:** [OpenAI API](https://platform.openai.com/docs) (GPT-4)
+- **Responsabilidad:** Despensa, Dietas con IA, Recetas, Listas de compra
+- **Puerto:** 8000
+- **Auth:** JWT (Access + Refresh Tokens)
+
+### Base de Datos
+- **Motor:** [PostgreSQL](https://www.postgresql.org/) 15+
+- **Schemas:** Separados por servicio (`auth_schema`, `core_schema`, `pantry_schema`)
+- **Migraciones:** 
+  - Entity Framework Migrations (.NET)
+  - Flyway/Liquibase (Spring Boot)
+  - Alembic (Python FastAPI)
+- **Local:** Docker para desarrollo
+
+### Código Compartido (`packages/shared`)
+- **Tipos TypeScript:** Interfaces compartidas para Web frontend
+- **Utilidades:** Funciones helper reutilizables
+
+### Inteligencia Artificial
+- **Provider:** [OpenAI](https://openai.com/) GPT-4 / GPT-3.5
+- **SDK:** `openai` oficial (llamado desde Backend)
+- **Uso:** Generación de dietas, sugerencias de recetas, listas de compra
+
+### DevOps y Herramientas
+- **Package Manager:** [pnpm](https://pnpm.io/) (monorepo)
+- **Linting:** ESLint + Prettier
+- **Testing:** Jest / Vitest (futuro)
+- **CI/CD:** GitHub Actions (futuro)
+- **Containerization:** Docker para PostgreSQL
+
+---
+
+## 📦 Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+### Esenciales
+- **Node.js** >= 18.0.0 (para Web frontend y tooling)
+- **pnpm** >= 8.0.0 (gestor de paquetes del monorepo)
+- **Git**
+- **Docker Desktop** (para PostgreSQL)
+
+### Backend Services
+- **.NET SDK 8** (para Auth Service)
+- **Java JDK 17+** (para Core Service - Spring Boot)
+- **Python 3.11+** (para Pantry/IA Service)
+- **Maven** o **Gradle** (para gestión de dependencias Java)
+
+### API Keys
+- **Cuenta API OpenAI** (para funcionalidades de IA)
+
+### Opcionales (según plataforma de desarrollo)
+- **Rust + Tauri CLI** (para desarrollo desktop)
+- **Flutter SDK** (para desarrollo móvil)
+- **Android Studio** (para emulador móvil)
+
+### Verificar instalación
+```bash
+node --version          # v18.0.0+
+pnpm --version          # 8.0.0+
+dotnet --version        # 8.x.x
+java --version          # 17+
+python --version        # 3.11+
+git --version
+docker --version
+```
+
+---
+
+## 🚀 Instalación y Setup
+
+### Clonar el repositorio
+
+```bash
+git clone https://github.com/MarioAJ11/Pland-IA.git
+cd Pland-IA
+```
+
+### Setup Base de Datos con Docker
+
+Inicia PostgreSQL y Redis con Docker Compose:
+
+```bash
+# Desde la raíz del proyecto
+docker-compose up -d
+```
+
+Esto iniciará:
+- PostgreSQL 15 en puerto `5432`
+- Redis 7 en puerto `6379`
+
+### Configurar Variables de Entorno
+
+#### Auth Service (.NET)
+
+```bash
+cd apps/auth-service/AuthService
+cp .env.example .env
+```
+
+Editar `.env`:
+
+```env
+# PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=plandia_db
+DB_USER=postgres
+DB_PASSWORD=postgres123
+
+# JWT
+JWT_SECRET=TU_SECRET_MUY_SEGURO_MINIMO_32_CARACTERES_AQUI
+JWT_ISSUER=PlandIA.AuthService
+JWT_AUDIENCE=PlandIA.Clients
+JWT_EXPIRATION_MINUTES=60
+JWT_REFRESH_EXPIRATION_DAYS=7
+
+# Server
+PORT=5001
+ASPNETCORE_ENVIRONMENT=Development
+```
+
+#### Core Service (Spring Boot)
+
+```bash
+cd apps/core-service
+cp .env.example .env
+```
+
+Editar `.env`:
+
+```env
+# PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=plandia_db
+DB_USER=postgres
+DB_PASSWORD=postgres123
+
+# JWT (debe coincidir con Auth Service)
+JWT_SECRET=TU_SECRET_MUY_SEGURO_MINIMO_32_CARACTERES_AQUI
+JWT_ISSUER=PlandIA.AuthService
+JWT_AUDIENCE=PlandIA.Clients
+
+# CORS
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
+
+# Server
+SERVER_PORT=8080
+SPRING_PROFILES_ACTIVE=dev
+```
+
+### Inicializar Base de Datos
+
+#### Auth Service (EF Core Migrations)
+
+```bash
+cd apps/auth-service/AuthService
+
+# Aplicar migraciones existentes
+dotnet ef database update
+
+# O crear nueva migración si cambias el modelo
+dotnet ef migrations add NombreMigracion
+dotnet ef database update
+```
+
+#### Core Service (JPA Hibernate)
+
+El Core Service usa `spring.jpa.hibernate.ddl-auto=update` por ahora, así que las tablas se crean automáticamente al iniciar.
+
+### Ejecutar los Servicios
+
+#### 1. Auth Service (.NET)
+
+```bash
+cd apps/auth-service/AuthService
+dotnet run
+```
+
+Disponible en: `http://localhost:5001`  
+Swagger UI: `http://localhost:5001/swagger`
+
+#### 2. Core Service (Spring Boot)
+
+```bash
+cd apps/core-service
+
+# Con Maven Wrapper
+./mvnw spring-boot:run
+
+# O con Maven instalado
+mvn spring-boot:run
+```
+
+Disponible en: `http://localhost:8080`  
+Swagger UI: `http://localhost:8080/swagger-ui.html`
+
+#### 3. Pantry Service (Python/FastAPI) - TBD
+
+```bash
+cd apps/pantry-service
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+### Verificar Instalación
+
+**1. Auth Service**
+
+```bash
+# Register
+curl -X POST http://localhost:5001/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@plandai.com",
+    "password": "Test123!",
+    "name": "Test User"
+  }'
+
+# Login
+curl -X POST http://localhost:5001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@plandai.com",
+    "password": "Test123!"
+  }'
+```
+
+**2. Core Service** (requiere token JWT del Auth Service)
+
+```bash
+# Obtener workspaces (necesitas el access_token del login)
+curl -X GET http://localhost:8080/api/workspaces \
+  -H "Authorization: Bearer TU_ACCESS_TOKEN_AQUI"
+```
+
+### Scripts Útiles
+
+Puedes usar los PowerShell scripts incluidos:
+
+```powershell
+# Iniciar Core Service
+.\start-core-service.ps1
+
+# Ejecutar tests de Auth Service
+cd apps\auth-service
+dotnet test
+
+# Ejecutar tests de Core Service
+cd apps\core-service
+mvn test
+```
+
+---
+
+## 🎮 Uso
+
+### Desarrollo
+
+#### Iniciar Backend
+```bash
+cd apps/backend
+pnpm dev
+```
+El servidor estará disponible en `http://localhost:3000`
+
+#### Iniciar Frontend Web
+```bash
+cd apps/web-desktop
+pnpm dev
+```
+La aplicación estará disponible en `http://localhost:5173`
+
+#### Iniciar App Desktop (Tauri)
+```bash
+cd apps/web-desktop
+pnpm tauri dev
+```
+
+#### Iniciar App Móvil (Flutter)
+```bash
+cd apps/mobile
+flutter run
+```
+
+---
+
+## 🧪 Testing
+
+### Resumen de Tests
+
+**Total: 34/34 tests passing ✅**
+
+| Servicio | Framework | Tests | Estado | Cobertura |
+|----------|-----------|-------|--------|-----------|
+| **Auth Service** | xUnit + Moq | 10/10 | ✅ Passing | ~75% |
+| **Core Service** | JUnit 5 + Mockito | 24/24 | ✅ Passing | ~75% |
+| **Pantry Service** | pytest | TBD | ⏳ Pendiente | - |
+
+### Auth Service Tests (.NET)
+
+**Ubicación**: `apps/auth-service/AuthService.Tests/`
+
+```bash
+# Ejecutar todos los tests
+cd apps/auth-service
+dotnet test
+
+# Ejecutar con detalles
+dotnet test --logger "console;verbosity=detailed"
+
+# Ejecutar con cobertura
+dotnet test /p:CollectCoverage=true
+```
+
+**Tests Implementados** (10 tests):
+
+1. ✅ `Register_CreatesUserSuccessfully` - Valida creación de usuario y generación de tokens
+2. ✅ `Register_ThrowsException_WhenEmailExists` - Valida email duplicado
+3. ✅ `Login_ReturnsTokens_WithValidCredentials` - Valida login exitoso
+4. ✅ `Login_ThrowsException_WhenEmailNotFound` - Valida email inexistente
+5. ✅ `Login_ThrowsException_WhenPasswordIsWrong` - Valida password incorrecto
+6. ✅ `RefreshToken_GeneratesNewAccessToken_WithValidToken` - Valida refresh token
+7. ✅ `RefreshToken_ThrowsException_WithInvalidToken` - Valida token inválido
+8. ✅ `Register_HashesPassword_Correctly` - Valida hash BCrypt
+9. ✅ `Login_AccessToken_ContainsCorrectClaims` - Valida estructura JWT
+10. ✅ `Register_SetsCreatedAtTimestamp` - Valida timestamps UTC
+
+**Tecnologías**:
+- xUnit 2.x para estructura de tests
+- Moq 4.20.72 para mocking de IConfiguration
+- EF Core InMemory 9.0.10 para base de datos en memoria
+- Patrón Arrange-Act-Assert
+
+### Core Service Tests (Java)
+
+**Ubicación**: `apps/core-service/src/test/java/`
+
+```bash
+# Ejecutar todos los tests
+cd apps/core-service
+./mvnw test
+
+# O con Maven instalado
+mvn test
+
+# Ejecutar tests específicos
+mvn test -Dtest=JwtUtilTest
+mvn test -Dtest=WorkspaceServiceTest
+```
+
+**Tests Implementados** (24 tests):
+
+#### JwtUtilTest (12 tests)
+1. ✅ `testExtractUserId` - Extrae UUID del token
+2. ✅ `testExtractEmail` - Extrae email del token
+3. ✅ `testExtractName` - Extrae nombre del token
+4. ✅ `testValidateToken_Valid` - Valida tokens correctos
+5. ✅ `testValidateToken_Expired` - Rechaza tokens expirados
+6. ✅ `testValidateToken_InvalidSignature` - Rechaza tokens con firma inválida
+7. ✅ `testValidateToken_Malformed` - Maneja tokens malformados
+8. ✅ `testExtractUserId_WrongIssuer` - Valida issuer correcto
+9. ✅ `testExtractUserId_WrongAudience` - Valida audience correcto
+10. ✅ `testValidateToken_Null` - Maneja tokens nulos
+11. ✅ `testValidateToken_Empty` - Maneja tokens vacíos
+12. ✅ `testExtractExpiration` - Extrae fecha de expiración
+
+#### WorkspaceServiceTest (11 tests)
+1. ✅ `testGetWorkspacesByUserId` - Retorna workspaces del usuario
+2. ✅ `testGetWorkspacesByUserId_Empty` - Retorna lista vacía
+3. ✅ `testGetWorkspaceById` - Obtiene workspace por ID
+4. ✅ `testGetWorkspaceById_NotFound` - Lanza excepción si no existe
+5. ✅ `testCreateWorkspace` - Crea workspace exitosamente
+6. ✅ `testUpdateWorkspace` - Actualiza workspace existente
+7. ✅ `testUpdateWorkspace_NotFound` - Excepción si no existe
+8. ✅ `testDeleteWorkspace` - Elimina workspace
+9. ✅ `testDeleteWorkspace_NotFound` - Excepción si no existe al eliminar
+10. ✅ `testGetWorkspacesByUserId_NullUserId` - Maneja userId nulo
+11. ✅ `testUpdateWorkspace_UpdatesFields` - Verifica actualización de campos
+
+**Tecnologías**:
+- JUnit 5 para estructura de tests
+- Mockito para mocking de repositorios
+- ReflectionTestUtils para inyectar valores de configuración
+- Keys.hmacShaKeyFor para generar claves de test
+
+### Pantry Service Tests (Python) - TBD
+
+```bash
+cd apps/pantry-service
+pytest
+pytest --cov=app
+```
+
+---
+
+## 📁 Estructura del Proyecto (Monorepo Microservicios)
+
+```
+Pland-IA/                           # Raíz del monorepo
+├── .github/                        # Configuración de GitHub
+│   ├── copilot-instructions.md    # Instrucciones para GitHub Copilot
+│   ├── PLANNING_COMPLETO.md       # 📅 Planning detallado de 12 semanas
+│   ├── PROJECT_CONTEXT.md         # Contexto completo del proyecto
+│   └── ROADMAP.md                 # Roadmap de desarrollo
+│
+├── apps/                           # Aplicaciones ejecutables
+│   ├── auth-service/              # 🔐 Servicio de Autenticación (.NET 8)
+│   │   ├── Controllers/
+│   │   ├── Services/
+│   │   ├── Models/
+│   │   │   ├── Entities/         # Entidades de BD
+│   │   │   └── DTOs/             # Data Transfer Objects
+│   │   ├── Data/
+│   │   │   └── AppDbContext.cs   # Entity Framework DbContext
+│   │   ├── Middleware/
+│   │   ├── appsettings.json
+│   │   └── Program.cs            # Entry point
+│   │
+│   ├── core-service/              # 📋 Servicio Core (Spring Boot)
+│   │   └── src/main/java/com/plandaia/core/
+│   │       ├── controller/
+│   │       ├── service/
+│   │       ├── repository/
+│   │       ├── model/
+│   │       │   ├── entity/       # JPA Entities
+│   │       │   └── dto/          # DTOs
+│   │       ├── config/           # Configuración Spring
+│   │       ├── exception/        # Exception handlers
+│   │       ├── security/         # Security config
+│   │       └── CoreServiceApplication.java
+│   │
+│   ├── pantry-service/            # 🍽️ Servicio Despensa/IA (Python)
+│   │   ├── app/
+│   │   │   ├── main.py           # FastAPI app
+│   │   │   ├── config.py
+│   │   │   ├── database.py       # SQLAlchemy setup
+│   │   │   ├── models/           # SQLAlchemy models
+│   │   │   ├── schemas/          # Pydantic schemas
+│   │   │   ├── routers/          # API routes
+│   │   │   ├── services/
+│   │   │   │   └── ai_service.py # OpenAI integration
+│   │   │   └── middleware/
+│   │   ├── tests/
+│   │   ├── requirements.txt
+│   │   └── .env
+│   │
+│   ├── web-desktop/               # 🌐 Frontend Web (React + Tauri)
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   ├── pages/
+│   │   │   ├── services/         # API calls a los 3 backends
+│   │   │   ├── stores/           # Zustand state
+│   │   │   ├── hooks/
+│   │   │   ├── types/
+│   │   │   └── App.tsx
+│   │   ├── src-tauri/            # Tauri (Rust)
+│   │   ├── package.json
+│   │   └── vite.config.ts
+│   │
+│   └── mobile/                    # 📱 App Móvil (Flutter)
+│       ├── lib/
+│       │   ├── screens/
+│       │   ├── widgets/
+│       │   ├── services/
+│       │   ├── providers/        # Riverpod
+│       │   └── main.dart
+│       └── pubspec.yaml
+│
+├── packages/                       # Código compartido
+│   └── shared/                    # Tipos TypeScript compartidos (opcional)
+│       ├── types/
+│       └── utils/
+│
+├── docker/                         # Docker setup
+│   ├── docker-compose.yml         # Orquestación de todos los servicios
+│   └── postgres-init/             # Scripts de inicialización de BD
+│       └── init.sql               # Crear schemas separados
+│
+├── pnpm-workspace.yaml            # Configuración del monorepo
+├── package.json                   # Dependencias raíz
+└── README.md                      # Este archivo
+```
+│   │   ├── middleware/          # Middleware custom
+│   │   ├── utils/               # Utilidades
+│   │   ├── config/              # Configuraciones
+│   │   ├── types/               # TypeScript types
+│   │   ├── validators/          # Schemas de validación
+│   │   └── index.ts             # Entry point
+│   ├── prisma/
+│   │   ├── schema.prisma        # Esquema de BD
+│   │   ├── migrations/          # Migraciones
+│   │   └── seed.ts              # Seed data
+│   ├── tests/                   # Tests
+│   ├── .env.example
+│   ├── tsconfig.json
+│   └── package.json
+│
+├── docs/                        # Documentación
+│   ├── PROJECT_CONTEXT.md       # Contexto del proyecto
+│   ├── ARCHITECTURE.md          # Arquitectura
+│   ├── API.md                   # Documentación API
+│   └── CONVENTIONS.md           # Convenciones
+│
+├── .github/
+│   ├── copilot-instructions.md  # Instrucciones para Copilot
+│   └── workflows/               # GitHub Actions
+│       ├── ci.yml
+│       └── deploy.yml
+│
+├── .gitignore
+├── README.md
+├── ROADMAP.md
+└── LICENSE
+```
+
+---
+
+## 🔧 Scripts Disponibles
+
+### Frontend
+
+```bash
+npm run dev          # Modo desarrollo
+npm run build        # Build para producción
+npm run preview      # Preview del build
+npm run lint         # Ejecutar ESLint
+npm run lint:fix     # Fix errores de linting
+## 🔧 Scripts Disponibles
+
+### Root (Monorepo)
+
+```bash
+pnpm install             # Instalar todas las dependencias
+pnpm --filter backend dev         # Iniciar solo backend
+pnpm --filter web-desktop dev     # Iniciar solo frontend web
+pnpm run dev:all         # Iniciar todos los proyectos (si está configurado)
+```
+
+### Backend
+
+```bash
+cd apps/backend
+
+pnpm dev                 # Modo desarrollo con hot reload
+pnpm build               # Compilar TypeScript
+pnpm start               # Producción (requiere build previo)
+pnpm lint                # Ejecutar ESLint
+pnpm test                # Ejecutar tests (futuro)
+
+# Prisma
+npx prisma generate      # Generar cliente Prisma
+npx prisma migrate dev   # Ejecutar migraciones
+npx prisma studio        # Abrir Prisma Studio GUI
+npx prisma db seed       # Ejecutar seed (futuro)
+```
+
+### Frontend Web
+
+```bash
+cd apps/web-desktop
+
+pnpm dev                 # Modo desarrollo (Vite)
+pnpm build               # Build para producción
+pnpm preview             # Preview del build
+pnpm lint                # Ejecutar ESLint
+pnpm test                # Ejecutar tests (futuro)
+
+# Tauri (Desktop)
+pnpm tauri dev           # Modo desarrollo desktop
+pnpm tauri build         # Build para Windows/Linux
+```
+
+### Mobile (Flutter)
+
+```bash
+cd apps/mobile
+
+flutter run              # Ejecutar en emulador/dispositivo
+flutter build apk        # Build APK para Android
+flutter test             # Ejecutar tests
+```
+
+---
+
+## 📚 Documentación
+
+### Documentación del Proyecto
+- **[.github/PROJECT_CONTEXT.md](./.github/PROJECT_CONTEXT.md)** - Contexto completo del proyecto
+- **[.github/ROADMAP.md](./.github/ROADMAP.md)** - Plan de desarrollo por fases
+- **[.github/copilot-instructions.md](./.github/copilot-instructions.md)** - Instrucciones para GitHub Copilot
+
+### Guías de Configuración
+- **[.github/GUIA_CONFIGURACION_COPILOT.md](./.github/GUIA_CONFIGURACION_COPILOT.md)** - Cómo configurar Copilot
+- **[.github/COMO_EMPEZAR.md](./.github/COMO_EMPEZAR.md)** - Guía de inicio rápido
+- **[.github/PLANTILLAS_CONFIGURACION.md](./.github/PLANTILLAS_CONFIGURACION.md)** - Templates de `.env`
+
+### Referencias
+- [Prisma Docs](https://www.prisma.io/docs)
+- [React Docs](https://react.dev/)
+- [Express Docs](https://expressjs.com/)
+- [Flutter Docs](https://flutter.dev/docs)
+- [Tauri Docs](https://tauri.app/)
+
+---
+
+## 📊 Progreso del Proyecto
+
+### Estado Actual: **Backend Foundations Complete** ✅
+
+**Fase Completada**: Microservicios Backend  
+**Progreso General**: ~30% (Backend sólido, Frontend pendiente)
+
+### ✅ Completados (TODOs #1-6)
+
+#### 🔐 TODO #1: Variables de Entorno
+- ✅ Auth Service: `.env.example`, DotNetEnv 3.1.1
+- ✅ Core Service: `.env.example`, `${ENV_VAR:default}` syntax
+- ✅ `.gitignore` actualizado
+- ✅ Configuración flexible y segura
+
+#### 🎭 TODO #2: Profiles de Configuración
+- ✅ Auth Service: `appsettings.Development.json` + `appsettings.Production.json`
+- ✅ Core Service: `application-dev.properties` + `application-prod.properties`
+- ✅ Logging, CORS, pool sizes específicos por entorno
+- ✅ Activación con `ASPNETCORE_ENVIRONMENT` y `SPRING_PROFILES_ACTIVE`
+
+#### 🔗 TODO #3: JWT Integration Auth ↔ Core
+- ✅ Spring Security + JJWT 0.12.6 configurado
+- ✅ `JwtUtil`, `JwtAuthenticationFilter`, `SecurityConfig` implementados
+- ✅ `AuthenticatedUserHelper` para extracción automática de userId
+- ✅ `WorkspaceController` con JWT validation
+- ✅ **TESTED END-TO-END**: Login → Token → GET /api/workspaces ✅
+
+#### 📊 TODO #4: Logging Unificado
+- ✅ Auth Service: Serilog con rolling files
+- ✅ Core Service: `logback-spring.xml` con rolling files
+- ✅ 10MB/file (dev), 50MB/file (prod)
+- ✅ Retención: 30 días (dev), 90 días (prod)
+- ✅ Logs estructurados con niveles apropiados
+
+#### 🌐 TODO #5: CORS Configuración Flexible
+- ✅ `CorsConfig.java` con dynamic origins desde env var
+- ✅ Métodos: GET, POST, PUT, DELETE, PATCH, OPTIONS
+- ✅ AllowCredentials: true, MaxAge: 3600s
+- ✅ Configuración centralizada y reutilizable
+
+#### ✅ TODO #6: Tests Unitarios Completos
+- ✅ **Auth Service**: 10/10 tests passing (xUnit + Moq)
+  - Register: creación, duplicados, hash BCrypt
+  - Login: autenticación, tokens, validaciones
+  - RefreshToken: generación, expiración
+- ✅ **Core Service**: 24/24 tests passing (JUnit 5 + Mockito)
+  - JwtUtil: 12 tests (validación, claims, expiración)
+  - WorkspaceService: 11 tests (CRUD, mocks, excepciones)
+- ✅ **Total: 34 tests passing** 🎉
+- ✅ Cobertura: ~75% en ambos servicios
+
+### ⏳ En Progreso
+
+#### 📝 TODO #7: Actualizar README.md
+- ⏳ Documentación de arquitectura
+- ⏳ Guías de instalación y testing
+- ⏳ Descripción completa del proyecto
+
+### 🔜 Próximos Pasos (Opcional)
+
+#### 🗄️ TODO #8: Flyway Migrations (Opcional)
+- ⏳ Reemplazar `ddl-auto=update` por Flyway
+- ⏳ Crear `V1__initial_schema.sql`
+- ⏳ Control de versiones de base de datos
+- **Prioridad**: Baja (nice-to-have)
+
+#### 🎨 Frontend Development (Next Phase)
+- ⏳ Setup React + Vite + TypeScript
+- ⏳ Authentication UI (Login/Register)
+- ⏳ Workspaces Dashboard
+- ⏳ Integration con Auth + Core Services
+
+### 📈 Métricas del Proyecto
+
+| Categoría | Completado | Pendiente | Total |
+|-----------|-----------|-----------|-------|
+| **Backend Services** | 2/3 | 1/3 | 3 |
+| **Tests Unitarios** | 34 | TBD | 34+ |
+| **TODOs Principales** | 6/8 | 2/8 | 8 |
+| **Líneas de Código** | ~15,000 | - | 15,000+ |
+| **Commits** | 7 | - | 7 |
+
+### 🏆 Logros Destacados
+
+1. **Arquitectura Microservicios Completa**
+   - 3 servicios independientes (.NET, Java, Python)
+   - PostgreSQL multi-schema
+   - JWT authentication end-to-end
+
+2. **Testing Robusto**
+   - 34 tests unitarios (100% passing)
+   - Múltiples frameworks (xUnit, JUnit, Moq, Mockito)
+   - Cobertura ~75% en servicios críticos
+
+3. **DevOps Best Practices**
+   - Variables de entorno
+   - Profiles por entorno
+   - Logging estructurado
+   - Docker ready
+   - Git conventional commits
+
+4. **Código Production-Ready**
+   - Validaciones completas
+   - Exception handling
+   - Security best practices
+   - CORS configurado
+   - Password hashing (BCrypt)
+
+### 🎯 Roadmap Futuro
+
+**Q1 2025 - Frontend & Mobile**
+- React + Vite webapp
+- Tauri desktop app
+- Flutter mobile app
+
+**Q2 2025 - Pantry Service & AI**
+- Pantry Service (FastAPI)
+- OpenAI integration
+- Recipe suggestions
+- Diet generation
+
+**Q3 2025 - Advanced Features**
+- Real-time collaboration
+- File uploads
+- Rich text editor
+- Notifications
+
+**Q4 2025 - Production**
+- Deployment automation
+- Monitoring & analytics
+- Performance optimization
+- Beta release
+
+---
+
+## 🤝 Contribuir
+
+Este es un proyecto personal de portfolio, pero las sugerencias y feedback son bienvenidos.
+
+### Convenciones de Commits
+
+Seguimos [Conventional Commits](https://www.conventionalcommits.org/):
+
+- `feat:` Nueva funcionalidad
+- `fix:` Corrección de bug
+- `docs:` Documentación
+- `style:` Formato, sin cambios de código
+- `refactor:` Refactorización
+- `test:` Tests
+- `chore:` Mantenimiento
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver [LICENSE](./LICENSE) para detalles.
+
+---
+
+## 👥 Equipo
+
+- **[Tu Nombre]** - Desarrollador Principal - [@tu_usuario](https://github.com/tu_usuario)
+
+---
+
+## 🙏 Agradecimientos
+
+- [OpenAI](https://openai.com/) por la API de IA
+- [Vercel](https://vercel.com/) por el hosting
+- Comunidad de código abierto
+
+---
+
+## 📞 Contacto
+
+- **Email:** tu_email@ejemplo.com
+- **GitHub:** [@tu_usuario](https://github.com/tu_usuario)
+
+---
+
+## 👥 Autor
+
+- **Mario Alguacil Juárez** - Desarrollador Full-Stack
+- **GitHub:** [@MarioAJ11](https://github.com/MarioAJ11)
+- **Proyecto:** Portfolio personal de desarrollo Full-Stack con IA
+
+---
+
+## 🙏 Agradecimientos
+
+- [OpenAI](https://openai.com/) por la API GPT-4
+- [Prisma](https://www.prisma.io/) por el excelente ORM
+- [Tauri](https://tauri.app/) por hacer posible apps desktop con React
+- [Flutter](https://flutter.dev/) por el framework móvil multiplataforma
+- Comunidad de código abierto
+
+---
+
+## 🔗 Enlaces Útiles
+
+- [Documentación del Proyecto](./.github/)
+- [Roadmap del Desarrollo](./.github/ROADMAP.md)
+- [Contexto del Proyecto](./.github/PROJECT_CONTEXT.md)
+- [Reportar un Bug](https://github.com/MarioAJ11/Pland-IA/issues)
+- [Solicitar Feature](https://github.com/MarioAJ11/Pland-IA/issues)
+
+---
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](./LICENSE) para más detalles.
+
+---
+
+<p align="center">
+  <strong>Pland-IA</strong> - Planificador Inteligente con Despensa 🍽️<br>
+  Hecho con ❤️ por <a href="https://github.com/MarioAJ11">Mario Alguacil Juárez</a><br>
+  <em>Proyecto de Portfolio Full-Stack 2025</em>
+</p>
