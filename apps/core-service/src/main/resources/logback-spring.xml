@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Property para el path de logs (desde env var o default) -->
+    <springProperty scope="context" name="LOG_PATH" source="logging.file.name" defaultValue="logs/core-service"/>
+    
+    <!-- Console Appender (para desarrollo) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    
+    <!-- File Appender con Rolling (producción y desarrollo) -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        
+        <!-- Rolling Policy: Archivos por fecha + tamaño -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Patrón de nombre: logs/core-service-2025-11-07.log -->
+            <fileNamePattern>${LOG_PATH}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            
+            <!-- Retención: 30 días -->
+            <maxHistory>30</maxHistory>
+            
+            <!-- Tamaño total máximo: 1GB -->
+            <totalSizeCap>1GB</totalSizeCap>
+            
+            <!-- Limpiar archivos antiguos al iniciar -->
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        
+        <!-- Trigger por tamaño: 10MB por archivo -->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>10MB</maxFileSize>
+        </triggeringPolicy>
+    </appender>
+    
+    <!-- Loggers específicos -->
+    
+    <!-- Core Service - INFO en prod, DEBUG en dev -->
+    <logger name="com.plandai.coreservice" level="${LOG_LEVEL:-INFO}"/>
+    
+    <!-- Hibernate SQL - DEBUG en dev, WARN en prod -->
+    <logger name="org.hibernate.SQL" level="${HIBERNATE_SQL_LOG:-DEBUG}"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="${HIBERNATE_BIND_LOG:-TRACE}"/>
+    
+    <!-- Spring Framework - WARN -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="${SPRING_WEB_LOG:-DEBUG}"/>
+    <logger name="org.springframework.security" level="INFO"/>
+    
+    <!-- HikariCP Connection Pool - WARN -->
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+    
+    <!-- Root Logger -->
+    <root level="${ROOT_LOG_LEVEL:-INFO}">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+    
+    <!-- Profile-specific configuration -->
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+    
+    <springProfile name="prod">
+        <root level="WARN">
+            <!-- Solo file en producción, console consume recursos -->
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+</configuration>
