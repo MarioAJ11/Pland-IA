@@ -23,6 +23,21 @@ info/ESTRATEGIA_NEGOCIO.md
 HISTORIAL_DESARROLLO.md
 
 # ============================================
+# VARIABLES DE ENTORNO (CRÍTICO - NUNCA SUBIR)
+# ============================================
+# Archivos .env contienen credenciales y secretos
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.staging
+
+# Solo permitimos los archivos .env.example (plantillas)
+!.env.example
+!**/.env.example
+
+# ============================================
 # NODE.JS / JAVASCRIPT / TYPESCRIPT
 # ============================================
 node_modules

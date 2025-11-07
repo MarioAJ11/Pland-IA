@@ -241,11 +241,19 @@ public class AuthService : IAuthService
     /// </summary>
     private string GenerateAccessToken(User user)
     {
-        // Leer configuración JWT desde appsettings.json
-        var secret = _configuration["JwtSettings:Secret"] 
-            ?? throw new InvalidOperationException("JWT Secret no configurado");
-        var issuer = _configuration["JwtSettings:Issuer"];
-        var audience = _configuration["JwtSettings:Audience"];
+        // 🔐 Leer configuración JWT prioritizando variables de entorno
+        var secret = Environment.GetEnvironmentVariable("JWT_SECRET")
+            ?? _configuration["JwtSettings:Secret"] 
+            ?? throw new InvalidOperationException("JWT Secret no configurado - use JWT_SECRET env var");
+        
+        var issuer = Environment.GetEnvironmentVariable("JWT_ISSUER")
+            ?? _configuration["JwtSettings:Issuer"]
+            ?? "PlandIA.AuthService";
+            
+        var audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")
+            ?? _configuration["JwtSettings:Audience"]
+            ?? "PlandIA.Client";
+            
         var expirationMinutes = GetAccessTokenExpirationMinutes();
 
         // Claims: información del usuario que se incluye en el token
@@ -302,10 +310,15 @@ public class AuthService : IAuthService
     }
 
     /// <summary>
-    /// Obtiene la duración del Access Token desde la configuración
+    /// Obtiene la duración del Access Token desde variables de entorno o configuración
     /// </summary>
     private int GetAccessTokenExpirationMinutes()
     {
+        var envValue = Environment.GetEnvironmentVariable("JWT_ACCESS_TOKEN_MINUTES");
+        if (!string.IsNullOrEmpty(envValue) && int.TryParse(envValue, out var minutes))
+        {
+            return minutes;
+        }
         return int.Parse(_configuration["JwtSettings:AccessTokenExpirationMinutes"] ?? "15");
     }
 
@@ -316,10 +329,20 @@ public class AuthService : IAuthService
     {
         if (rememberMe)
         {
+            var envValue = Environment.GetEnvironmentVariable("JWT_REFRESH_TOKEN_DAYS_REMEMBER");
+            if (!string.IsNullOrEmpty(envValue) && int.TryParse(envValue, out var days))
+            {
+                return days;
+            }
             return int.Parse(_configuration["JwtSettings:RefreshTokenExpirationDaysRememberMe"] ?? "30");
         }
         else
         {
+            var envValue = Environment.GetEnvironmentVariable("JWT_REFRESH_TOKEN_DAYS");
+            if (!string.IsNullOrEmpty(envValue) && int.TryParse(envValue, out var days))
+            {
+                return days;
+            }
             return int.Parse(_configuration["JwtSettings:RefreshTokenExpirationDays"] ?? "7");
         }
     }
