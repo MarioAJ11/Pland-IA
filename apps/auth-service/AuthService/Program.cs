@@ -108,6 +108,9 @@ app.UseHttpsRedirection();
 // Habilitar CORS
 app.UseCors("AllowFrontend");
 
+// Health check endpoint
+app.MapGet("/health", () => Results.Ok(new { status = "healthy", service = "auth-service" }));
+
 // Mapear los controllers
 app.MapControllers();
 

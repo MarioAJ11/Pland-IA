@@ -3,6 +3,8 @@
 A full-stack productivity platform with intelligent pantry management, built as a personal portfolio project to demonstrate modern microservices architecture and development practices.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Auth Service CI](https://github.com/MarioAJ11/Pland-IA/actions/workflows/auth-service-ci.yml/badge.svg)](https://github.com/MarioAJ11/Pland-IA/actions/workflows/auth-service-ci.yml)
+[![Core Service CI](https://github.com/MarioAJ11/Pland-IA/actions/workflows/core-service-ci.yml/badge.svg)](https://github.com/MarioAJ11/Pland-IA/actions/workflows/core-service-ci.yml)
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-green.svg)](https://spring.io/projects/spring-boot)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)

@@ -7,11 +7,11 @@ services:
     container_name: plandai-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: plandiadb
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-plandiadb}
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init-schemas.sql:/docker-entrypoint-initdb.d/init-schemas.sql
@@ -23,14 +23,80 @@ services:
     networks:
       - plandai-network
 
-  # 📊 pgAdmin (Opcional - UI para gestionar PostgreSQL)
+  # � Auth Service (.NET 8)
+  auth-service:
+    build:
+      context: ./apps/auth-service
+      dockerfile: Dockerfile
+    container_name: plandai-auth
+    restart: unless-stopped
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-plandiadb}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_SCHEMA: auth_schema
+      JWT_SECRET: ${JWT_SECRET:-change_me_in_production_min_32_chars}
+      JWT_ISSUER: ${JWT_ISSUER:-PlandIA.AuthService}
+      JWT_AUDIENCE: ${JWT_AUDIENCE:-PlandIA.Clients}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}
+    ports:
+      - "5012:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+    networks:
+      - plandai-network
+
+  # 📋 Core Service (Spring Boot 3.5)
+  core-service:
+    build:
+      context: ./apps/core-service
+      dockerfile: Dockerfile
+    container_name: plandai-core
+    restart: unless-stopped
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-plandiadb}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_SCHEMA: core_schema
+      JWT_SECRET: ${JWT_SECRET:-change_me_in_production_min_32_chars}
+      JWT_ISSUER: ${JWT_ISSUER:-PlandIA.AuthService}
+      JWT_AUDIENCE: ${JWT_AUDIENCE:-PlandIA.Clients}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}
+    ports:
+      - "8080:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 3s
+      start_period: 30s
+      retries: 3
+    networks:
+      - plandai-network
+
+  # �📊 pgAdmin (Opcional - UI para gestionar PostgreSQL)
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: plandai-pgadmin
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@plandai.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@plandai.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
       PGADMIN_LISTEN_PORT: 5050
     ports:
       - "5050:5050"

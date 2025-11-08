@@ -1,0 +1,69 @@
+name: Auth Service CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'apps/auth-service/**'
+      - '.github/workflows/auth-service-ci.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'apps/auth-service/**'
+      - '.github/workflows/auth-service-ci.yml'
+
+jobs:
+  build-and-test:
+    name: Build y Test - Auth Service
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: apps/auth-service/AuthService
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: plandia_auth_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restaurar dependencias
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Ejecutar tests
+      env:
+        ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=plandia_auth_test;Username=postgres;Password=postgres"
+        Jwt__Secret: "test_secret_key_minimum_32_characters_required_for_testing_purposes"
+        Jwt__Issuer: "PlandIA-Test"
+        Jwt__Audience: "PlandIA-Test"
+      run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test-results.trx"
+
+    - name: Publicar resultados de tests
+      if: always()
+      uses: dorny/test-reporter@v1
+      with:
+        name: Auth Service Tests
+        path: apps/auth-service/AuthService/TestResults/*.trx
+        reporter: dotnet-trx
+        fail-on-error: true
