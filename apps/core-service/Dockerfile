@@ -31,6 +31,10 @@ RUN apt-get update && \
 # Crear usuario no-root para mayor seguridad
 RUN groupadd -r spring && useradd -r -g spring spring
 
+# Crear directorio de logs con permisos
+RUN mkdir -p /var/log/core-service && \
+    chown -R spring:spring /var/log/core-service
+
 # Copiar JAR desde build stage
 COPY --from=build /app/target/*.jar app.jar
 

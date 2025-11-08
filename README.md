@@ -118,7 +118,7 @@ Pland-IA follows a microservices architecture with clear separation of concerns.
 ┌────────────────────────────────────────────────────────┐
 │                    CLIENTS                             │
 │                                                        │
-│  Web App (React)  │  Mobile (Flutter)  │  API Clients│
+│  Web App (React)  │  Mobile (Flutter)  │  API Clients  │
 └────────────────────────────────────────────────────────┘
                             │
                             │ HTTPS + JWT
@@ -126,23 +126,23 @@ Pland-IA follows a microservices architecture with clear separation of concerns.
 ┌────────────────────────────────────────────────────────┐
 │                  MICROSERVICES                         │
 │                                                        │
-│  ┌──────────────┐  ┌──────────────┐  ┌─────────────┐│
-│  │Auth Service  │  │Core Service  │  │Pantry Service││
-│  │(.NET 8)      │  │(Spring Boot) │  │(FastAPI)     ││
-│  │Port: 5001    │  │Port: 8080    │  │Port: 8000    ││
-│  │              │  │              │  │              ││
-│  │• Register    │  │• Workspaces  │  │• Pantry      ││
-│  │• Login       │  │• Projects    │  │• AI Diets    ││
-│  │• JWT Tokens  │  │• Pages       │  │• Recipes     ││
-│  │• Refresh     │  │• Tasks       │  │• Shopping    ││
-│  └──────────────┘  └──────────────┘  └─────────────┘│
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
+│  │Auth Service  │  │Core Service  │  │Pantry Service│  │
+│  │(.NET 8)      │  │(Spring Boot) │  │(FastAPI)     │  │
+│  │Port: 5001    │  │Port: 8080    │  │Port: 8000    │  │
+│  │              │  │              │  │              │  │
+│  │• Register    │  │• Workspaces  │  │• Pantry      │  │
+│  │• Login       │  │• Projects    │  │• AI Diets    │  │
+│  │• JWT Tokens  │  │• Pages       │  │• Recipes     │  │
+│  │• Refresh     │  │• Tasks       │  │• Shopping    │  │
+│  └──────────────┘  └──────────────┘  └──────────────┘  │
 └────────────────────────────────────────────────────────┘
                             │
                             ▼
 ┌────────────────────────────────────────────────────────┐
 │           PostgreSQL 15 (Multi-Schema)                 │
 │                                                        │
-│  auth_schema  │  core_schema  │  pantry_schema       │
+│  auth_schema  │  core_schema  │  pantry_schema         │
 └────────────────────────────────────────────────────────┘
 ```
 

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # 🐘 PostgreSQL Database
   postgres:
@@ -73,7 +71,9 @@ services:
       JWT_SECRET: ${JWT_SECRET:-change_me_in_production_min_32_chars}
       JWT_ISSUER: ${JWT_ISSUER:-PlandIA.AuthService}
       JWT_AUDIENCE: ${JWT_AUDIENCE:-PlandIA.Clients}
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8081
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}
     ports:
       - "8080:8081"
