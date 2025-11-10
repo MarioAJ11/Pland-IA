@@ -71,6 +71,26 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Maneja ResourceNotFoundException personalizada.
+     * Se lanza cuando no se encuentra un recurso por ID (404).
+     * 
+     * Retorna 404 Not Found.
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleResourceNotFoundException(
+            ResourceNotFoundException ex) {
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Not Found");
+        response.put("message", ex.getMessage());
+
+        log.warn("Resource not found: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    /**
      * Maneja NoSuchElementException.
      * Se lanza cuando no se encuentra un recurso (404).
      * 

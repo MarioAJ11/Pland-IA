@@ -1,7 +1,8 @@
 package com.plandai.coreservice.controllers;
 
+import com.plandai.coreservice.dto.WorkspaceCreateDto;
+import com.plandai.coreservice.dto.WorkspaceUpdateDto;
 import com.plandai.coreservice.entities.Workspace;
-import com.plandai.coreservice.security.AuthenticatedUserHelper;
 import com.plandai.coreservice.services.WorkspaceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,19 +17,10 @@ import java.util.UUID;
 /**
  * Controlador REST para Workspace.
  * 
- * Expone endpoints HTTP que cualquier cliente puede consumir:
- * - Tauri Desktop (puerto 1420)
- * - React Web (puerto 3000/5173)
- * - App Móvil (futuro)
- * - Swagger UI (testing - requiere Bearer token)
- * - Postman (testing - requiere Bearer token)
- * 
- * NOTA: Todos los endpoints requieren autenticación JWT (excepto Swagger UI)
- * El userId se extrae automáticamente del token JWT
+ * API REST completa para gestión de workspaces con validación y DTOs.
  * 
  * @RestController: Combina @Controller + @ResponseBody (respuestas JSON automáticas)
  * @RequestMapping: Define la ruta base (/api/workspaces)
- * @CrossOrigin: Ya está configurado globalmente en application.properties
  */
 @RestController
 @RequestMapping("/api/workspaces")
@@ -37,33 +29,32 @@ import java.util.UUID;
 public class WorkspaceController {
 
     private final WorkspaceService workspaceService;
-    private final AuthenticatedUserHelper authHelper;
 
     /**
-     * GET /api/workspaces
-     * Obtiene todos los workspaces del usuario autenticado.
+     * POST /api/workspaces
+     * Crea un nuevo workspace.
      * 
-     * Ejemplo: GET http://localhost:8080/api/workspaces
-     * Header: Authorization: Bearer <jwt-token>
-     * Respuesta: [{"id": "uuid", "name": "Trabajo", ...}, ...]
+     * Body: WorkspaceCreateDto con validaciones
+     * Respuesta: 201 Created + workspace creado
      */
-    @GetMapping
-    public ResponseEntity<List<Workspace>> getAllWorkspaces() {
-        UUID userId = authHelper.getCurrentUserId();
-        log.info("📥 GET /api/workspaces - userId extraído del JWT: {}", userId);
-
-        List<Workspace> workspaces = workspaceService.getWorkspacesByUserId(userId);
-        return ResponseEntity.ok(workspaces);
+    @PostMapping
+    public ResponseEntity<Workspace> createWorkspace(@Valid @RequestBody WorkspaceCreateDto createDto) {
+        log.info("📥 POST /api/workspaces - name: {}, userId: {}", createDto.getName(), createDto.getUserId());
+        
+        Workspace workspace = new Workspace();
+        workspace.setName(createDto.getName());
+        workspace.setDescription(createDto.getDescription());
+        workspace.setUserId(createDto.getUserId());
+        
+        Workspace created = workspaceService.createWorkspace(workspace);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     /**
      * GET /api/workspaces/{id}
      * Obtiene un workspace específico por ID.
      * 
-     * Ejemplo: GET http://localhost:8080/api/workspaces/550e8400-e29b-41d4-a716-446655440000
-     * Respuesta: {"id": "uuid", "name": "Mi workspace", ...}
-     * 
-     * @PathVariable: Captura el {id} de la URL
+     * Respuesta: 200 OK o 404 Not Found
      */
     @GetMapping("/{id}")
     public ResponseEntity<Workspace> getWorkspaceById(@PathVariable UUID id) {
@@ -73,56 +64,58 @@ public class WorkspaceController {
     }
 
     /**
-     * POST /api/workspaces
-     * Crea un nuevo workspace para el usuario autenticado.
+     * GET /api/workspaces?userId={uuid}
+     * Obtiene workspaces filtrados por userId (query param opcional).
+     * Si no se proporciona userId, retorna todos (admin).
      * 
-     * Ejemplo: POST http://localhost:8080/api/workspaces
-     * Header: Authorization: Bearer <jwt-token>
-     * Body: {"name": "Trabajo Personal", "description": "..."}
-     * Respuesta: 201 Created + {"id": "uuid-generado", ...}
-     * 
-     * NOTA: El userId se extrae automáticamente del JWT, no del body
-     * 
-     * @RequestBody: Lee el JSON del body y lo convierte a Workspace
-     * @Valid: Activa validaciones (@NotBlank, @Size, etc.)
-     * ResponseEntity.status(201): Devuelve HTTP 201 Created
+     * Respuesta: 200 OK + lista de workspaces
      */
-    @PostMapping
-    public ResponseEntity<Workspace> createWorkspace(@Valid @RequestBody Workspace workspace) {
-        UUID userId = authHelper.getCurrentUserId();
-        log.info("📥 POST /api/workspaces - name: {}, userId: {}", workspace.getName(), userId);
+    @GetMapping
+    public ResponseEntity<List<Workspace>> getAllWorkspaces(
+            @RequestParam(required = false) UUID userId) {
+        log.info("📥 GET /api/workspaces - userId: {}", userId);
         
-        // Forzar userId del JWT (ignorar cualquier userId en el body)
-        workspace.setUserId(userId);
+        List<Workspace> workspaces;
+        if (userId != null) {
+            workspaces = workspaceService.getWorkspacesByUserId(userId);
+        } else {
+            workspaces = workspaceService.getAllWorkspaces();
+        }
         
-        Workspace created = workspaceService.createWorkspace(workspace);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        return ResponseEntity.ok(workspaces);
     }
 
     /**
      * PUT /api/workspaces/{id}
      * Actualiza un workspace existente.
      * 
-     * Ejemplo: PUT http://localhost:8080/api/workspaces/550e8400-e29b-41d4-a716-446655440000
-     * Body: {"name": "Nuevo nombre", "description": "Nueva desc"}
-     * Respuesta: 200 OK + workspace actualizado
+     * Body: WorkspaceUpdateDto (campos opcionales)
+     * Respuesta: 200 OK o 404 Not Found
      */
     @PutMapping("/{id}")
     public ResponseEntity<Workspace> updateWorkspace(
             @PathVariable UUID id,
-            @Valid @RequestBody Workspace workspace
-    ) {
+            @Valid @RequestBody WorkspaceUpdateDto updateDto) {
         log.info("📥 PUT /api/workspaces/{}", id);
-        Workspace updated = workspaceService.updateWorkspace(id, workspace);
+        
+        Workspace existing = workspaceService.getWorkspaceById(id);
+        
+        if (updateDto.getName() != null) {
+            existing.setName(updateDto.getName());
+        }
+        if (updateDto.getDescription() != null) {
+            existing.setDescription(updateDto.getDescription());
+        }
+        
+        Workspace updated = workspaceService.updateWorkspace(id, existing);
         return ResponseEntity.ok(updated);
     }
 
     /**
      * DELETE /api/workspaces/{id}
-     * Elimina un workspace (y todos sus proyectos por cascade).
+     * Elimina un workspace.
      * 
-     * Ejemplo: DELETE http://localhost:8080/api/workspaces/550e8400-e29b-41d4-a716-446655440000
-     * Respuesta: 204 No Content (sin body)
+     * Respuesta: 204 No Content
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWorkspace(@PathVariable UUID id) {

@@ -1,6 +1,7 @@
 package com.plandai.coreservice.services;
 
 import com.plandai.coreservice.entities.Workspace;
+import com.plandai.coreservice.exception.ResourceNotFoundException;
 import com.plandai.coreservice.repositories.WorkspaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +60,7 @@ public class WorkspaceService {
         return workspaceRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("❌ Workspace no encontrado: {}", id);
-                    return new IllegalArgumentException("Workspace no encontrado");
+                    return new ResourceNotFoundException("Workspace", id);
                 });
     }
 
@@ -113,7 +114,7 @@ public class WorkspaceService {
 
         if (!workspaceRepository.existsById(id)) {
             log.error("❌ Intento de eliminar workspace inexistente: {}", id);
-            throw new IllegalArgumentException("Workspace no encontrado");
+            throw new ResourceNotFoundException("Workspace", id);
         }
 
         workspaceRepository.deleteById(id);
