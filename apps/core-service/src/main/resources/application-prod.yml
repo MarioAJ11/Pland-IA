@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://db.zrrueidbplgrrjtvqxbv.supabase.co:5432/postgres
     username: postgres
-    password: 8gYViVGg9cQag0Rt
+    password: hcspvW8KjyvYQ5Ud
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
