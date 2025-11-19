@@ -5,16 +5,16 @@ services:
     container_name: plandai-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-      POSTGRES_DB: ${DB_NAME:-plandiadb}
+      POSTGRES_USER: ${DB_USER:-plandai_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-plandai_password}
+      POSTGRES_DB: ${DB_NAME:-plandai_db}
     ports:
       - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init-schemas.sql:/docker-entrypoint-initdb.d/init-schemas.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U plandai_user -d plandai_db"]
       interval: 10s
       timeout: 5s
       retries: 5
