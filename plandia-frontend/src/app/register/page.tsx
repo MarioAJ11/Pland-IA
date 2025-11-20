@@ -59,7 +59,9 @@ export default function RegisterPage() {
       // Redirigir al dashboard
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al registrar usuario');
+      console.error('Error completo:', err);
+      console.error('Respuesta del servidor:', err.response);
+      setError(err.response?.data?.message || err.message || 'Error al registrar usuario');
     } finally {
       setLoading(false);
     }
@@ -90,7 +92,7 @@ export default function RegisterPage() {
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-gray-900 placeholder:text-gray-400 bg-white"
               placeholder="Juan Pérez"
             />
           </div>
@@ -105,7 +107,7 @@ export default function RegisterPage() {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-gray-900 placeholder:text-gray-400 bg-white"
               placeholder="tu@email.com"
             />
           </div>
@@ -120,7 +122,7 @@ export default function RegisterPage() {
               required
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-gray-900 placeholder:text-gray-400 bg-white"
               placeholder="Mínimo 6 caracteres"
             />
           </div>
@@ -135,7 +137,7 @@ export default function RegisterPage() {
               required
               value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-gray-900 placeholder:text-gray-400 bg-white"
               placeholder="Repite tu contraseña"
             />
           </div>

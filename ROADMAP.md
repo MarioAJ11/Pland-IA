@@ -310,7 +310,7 @@ Pland-IA/
 │   │   └── resources/
 │   │       └── db/migration # Flyway V1+V2 ✅
 │   │
-│   └── plandai-frontend/    # Frontend Next.js
+│   └── plandia-frontend/    # Frontend Next.js
 │       ├── src/
 │       │   ├── app/         # Pages ✅
 │       │   ├── components/  # UI componentes ✅
