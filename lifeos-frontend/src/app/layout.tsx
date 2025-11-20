@@ -6,7 +6,7 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "LifeOS - Gestiona tu vida",
+  title: "Pland-IA - Organiza tu vida con inteligencia",
   description: "Sistema completo para gestionar proyectos, tareas, gastos y salud",
 };
 
@@ -16,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className={inter.className}>
+    <html lang="es" suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>

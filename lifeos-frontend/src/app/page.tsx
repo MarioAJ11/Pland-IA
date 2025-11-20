@@ -12,7 +12,7 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <Brain className="w-8 h-8 text-indigo-600" />
             <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
-              LifeOS
+              Pland-IA
             </h1>
           </div>
           <div className="flex gap-4">
@@ -34,10 +34,10 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-20 text-center">
-        <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent leading-tight">
           Tu vida, organizada con IA
         </h2>
-        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
           Gestiona proyectos, tareas, calendario, gastos y comidas en un solo lugar. 
           Potenciado por inteligencia artificial.
         </p>
@@ -94,7 +94,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t bg-white/50 backdrop-blur-sm mt-20">
         <div className="container mx-auto px-4 py-8 text-center text-gray-600">
-          <p>&copy; 2025 LifeOS. Tu sistema operativo para la vida.</p>
+          <p>&copy; 2025 Pland-IA. Planifica y gestiona tu vida con inteligencia artificial.</p>
         </div>
       </footer>
     </div>

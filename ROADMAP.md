@@ -310,13 +310,13 @@ Pland-IA/
 │   │   └── resources/
 │   │       └── db/migration # Flyway V1+V2 ✅
 │   │
-│   └── lifeos-frontend/     # Frontend Next.js
+│   └── plandai-frontend/    # Frontend Next.js
 │       ├── src/
 │       │   ├── app/         # Pages ✅
-│       │   ├── components/  # UI (pendiente)
-│       │   ├── services/    # API (parcial)
+│       │   ├── components/  # UI componentes ✅
+│       │   ├── services/    # API servicios ✅
 │       │   ├── store/       # Zustand ✅
-│       │   └── types/       # TypeScript (parcial)
+│       │   └── types/       # TypeScript ✅
 │       └── public/
 │
 ├── database/
