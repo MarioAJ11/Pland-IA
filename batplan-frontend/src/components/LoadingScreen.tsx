@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import PixelBatAnimation from './PixelBatAnimation';
 
 export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,12 +32,9 @@ export default function LoadingScreen() {
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-bg-app dark:bg-bg-dark-app">
-      {/* Aquí irá tu animación de murciélago */}
+      {/* Animación de murciélago pixel */}
       <div className="mb-8">
-        <div className="w-32 h-32 bg-brand-primary/10 rounded-full flex items-center justify-center">
-          {/* Placeholder para tu animación */}
-          <div className="text-6xl">🦇</div>
-        </div>
+        <PixelBatAnimation />
       </div>
       
       {/* Nombre de la app */}
@@ -49,7 +47,7 @@ export default function LoadingScreen() {
         <div className="h-full bg-brand-primary animate-loading-bar rounded-full"></div>
       </div>
       
-      <p className="mt-4 text-text-secondary dark:text-gray-400 text-sm">Cargando tu agenda...</p>
+      <p className="mt-4 text-text-secondary dark:text-text-dark-secondary text-sm">Cargando tu agenda...</p>
     </div>
   );
 }

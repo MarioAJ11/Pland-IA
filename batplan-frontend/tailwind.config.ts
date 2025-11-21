@@ -13,23 +13,25 @@ const config: Config = {
         mono: ['var(--font-vt323)', 'monospace'],
       },
       colors: {
-        // Brand Colors (del logo)
-        'brand-primary': '#54556b',  // Shadow Slate
-        'brand-dark': '#202020',     // Void Black
+        // Brand Colors (colores base menos secos)
+        'brand-primary': '#4C4E5C',  // Soft Charcoal - botones, CTAs, acentos
+        'brand-dark': '#212121',     // Soft Black - menos seco que negro puro
         'brand-light': '#FFFFFF',    // Pure White
         
         // Text Colors
-        'text-primary': '#202020',      // Void Black
-        'text-secondary': '#7D7E90',    // Soft Slate
-        'text-inverse': '#FFFFFF',      // Pure White
+        'text-primary': '#212121',      // Soft Black - texto principal light mode
+        'text-secondary': '#7D7E90',    // Soft Slate - texto secundario
+        'text-inverse': '#FFFFFF',      // Pure White - texto dark mode
+        'text-dark-primary': '#FFFFFF',    // Texto principal dark mode
+        'text-dark-secondary': '#B0B3C1', // Texto secundario dark mode (más claro)
         
         // Light Mode
-        'bg-app': '#EEF0F5',           // Bat Mist
-        'bg-surface': '#FFFFFF',       // Pure White
+        'bg-app': '#EEF0F5',           // Bat Mist - fondo principal
+        'bg-surface': '#FFFFFF',       // Pure White - cards
         
         // Dark Mode
-        'bg-dark-app': '#202020',      // Void Black
-        'bg-dark-surface': '#2D2D3A',  // Slate Oscuro
+        'bg-dark-app': '#212121',      // Soft Black - fondo oscuro (menos seco)
+        'bg-dark-surface': '#2D2D3A',  // Slate Oscuro - cards en modo oscuro
         
         // Functional Colors
         'success': '#2A9D8F',
