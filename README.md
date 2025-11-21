@@ -1,10 +1,10 @@
-# Pland-IA
+# BatPlan 🦇
 
-A full-stack productivity platform with intelligent pantry management, built as a personal portfolio project to demonstrate modern microservices architecture and development practices.
+Una plataforma de productividad con gestión inteligente de despensa, construida como proyecto de portafolio personal para demostrar arquitectura moderna de microservicios y prácticas de desarrollo.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Auth Service CI](https://github.com/MarioAJ11/Pland-IA/actions/workflows/auth-service-ci.yml/badge.svg)](https://github.com/MarioAJ11/Pland-IA/actions/workflows/auth-service-ci.yml)
-[![Core Service CI](https://github.com/MarioAJ11/Pland-IA/actions/workflows/core-service-ci.yml/badge.svg)](https://github.com/MarioAJ11/Pland-IA/actions/workflows/core-service-ci.yml)
+[![Auth Service CI](https://github.com/MarioAJ11/BatPlan/actions/workflows/auth-service-ci.yml/badge.svg)](https://github.com/MarioAJ11/BatPlan/actions/workflows/auth-service-ci.yml)
+[![Core Service CI](https://github.com/MarioAJ11/BatPlan/actions/workflows/core-service-ci.yml/badge.svg)](https://github.com/MarioAJ11/BatPlan/actions/workflows/core-service-ci.yml)
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-green.svg)](https://spring.io/projects/spring-boot)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
@@ -31,43 +31,43 @@ A full-stack productivity platform with intelligent pantry management, built as 
 
 ## About
 
-Pland-IA combines a Notion-inspired productivity workspace with an AI-powered pantry management system. This project serves as a comprehensive demonstration of my full-stack development capabilities, showcasing expertise across multiple programming languages, frameworks, and modern software development practices.
+BatPlan combina un espacio de trabajo de productividad inspirado en Notion con un sistema de gestión de despensa potenciado por IA. Este proyecto sirve como demostración completa de mis capacidades de desarrollo full-stack, mostrando experiencia en múltiples lenguajes de programación, frameworks y prácticas modernas de desarrollo de software.
 
 ### Project Goals
 
 **Primary Objectives:**
 
-- Demonstrate proficiency in microservices architecture with multiple tech stacks
-- Showcase clean code, testing practices, and production-ready development
-- Integrate AI functionality (OpenAI GPT) in a practical, real-world context
-- Build a complete system from authentication to data persistence
+- Demostrar proficiencia en arquitectura de microservicios con múltiples tech stacks
+- Mostrar código limpio, prácticas de testing y desarrollo listo para producción
+- Integrar funcionalidad de IA (OpenAI GPT) en un contexto práctico y real
+- Construir un sistema completo desde autenticación hasta persistencia de datos
 
 **Technical Showcase:**
 
 - **.NET 8** backend service (Auth Service)
 - **Spring Boot 3** backend service (Core Service)
-- **Python/FastAPI** backend service (Pantry Service - planned)
-- **React + TypeScript** frontend (in development)
-- **PostgreSQL** with multi-schema architecture
-- **JWT authentication** with token refresh flow
-- **Comprehensive unit testing** (34 tests across services)
-- **Docker-ready** deployment setup
+- **Python/FastAPI** backend service (Pantry Service - planeado)
+- **React + TypeScript** frontend con tema nocturno
+- **PostgreSQL** con arquitectura multi-schema
+- **JWT authentication** con flujo de refresh token
+- **Comprehensive unit testing** (34 tests a través de servicios)
+- **Docker-ready** configuración de despliegue
 
 ### Core Features
 
 **Productivity Suite**
 
-- Workspace and project organization
-- Rich text pages and documentation
-- Task management system
-- Secure user authentication
+- Organización de espacios de trabajo y proyectos
+- Páginas y documentación con texto enriquecido
+- Sistema de gestión de tareas
+- Autenticación segura de usuarios
 
 **Intelligent Pantry System**
 
-- AI-powered meal plan generation based on dietary preferences
-- Virtual pantry inventory tracking
-- Automated shopping list creation
-- Recipe suggestions using available ingredients
+- Generación de planes de comida potenciada por IA basada en preferencias dietéticas
+- Seguimiento de inventario de despensa virtual
+- Creación automatizada de listas de compras
+- Sugerencias de recetas usando ingredientes disponibles
 
 ---
 
@@ -77,27 +77,27 @@ Pland-IA combines a Notion-inspired productivity workspace with an AI-powered pa
 
 **Authentication & Authorization**
 
-- User registration and login with secure password hashing (BCrypt)
-- JWT access and refresh token flow
-- Token validation across services
-- User session management
+- Registro e inicio de sesión de usuario con hash seguro de contraseñas (BCrypt)
+- Flujo de access y refresh token JWT
+- Validación de tokens a través de servicios
+- Gestión de sesión de usuario
 
 **Workspace Management**
 
-- Create, read, update, and delete workspaces
-- User-specific workspace isolation
-- RESTful API endpoints with proper error handling
+- Crear, leer, actualizar y eliminar workspaces
+- Aislamiento de workspace específico por usuario
+- Endpoints API RESTful con manejo adecuado de errores
 
 **Infrastructure**
 
-- Environment-based configuration (Development/Production)
-- Structured logging with rotation policies
-- CORS configuration for cross-origin requests
-- Database migrations with Entity Framework
+- Configuración basada en entorno (Development/Production)
+- Logging estructurado con políticas de rotación
+- Configuración CORS para peticiones cross-origin
+- Migraciones de base de datos con Entity Framework
 
 ### Planned Features
 
-- Project and page management within workspaces
+- Gestión de proyectos y páginas dentro de workspaces
 - Task tracking with deadlines and priorities
 - Rich text editor for documentation
 - Pantry inventory management

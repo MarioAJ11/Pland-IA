@@ -121,12 +121,12 @@ export default function MealsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-bg-app dark:bg-bg-dark-app p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-3">
-            <UtensilsCrossed className="w-8 h-8 text-indigo-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Comidas</h1>
+            <UtensilsCrossed className="w-8 h-8 text-brand-primary" />
+            <h1 className="text-3xl font-bold text-text-primary dark:text-text-dark-primary">Comidas</h1>
           </div>
           <Button onClick={() => { resetMealForm(); setIsModalOpen(true); }}>
             <Plus className="w-4 h-4 mr-2" />
@@ -158,20 +158,20 @@ export default function MealsPage() {
                     <CardTitle>{meal.name}</CardTitle>
                     <button
                       onClick={() => handleToggleFavorite(meal)}
-                      className={`text-2xl ${meal.isFavorite ? 'text-yellow-500' : 'text-gray-300'}`}
+                      className={`text-2xl ${meal.isFavorite ? 'text-yellow-500' : 'text-gray-300 dark:text-gray-600'}`}
                     >
                       ★
                     </button>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-text-secondary dark:text-text-dark-secondary mt-1">
                     {meal.mealType} - {meal.prepTimeMinutes || 0} min
                   </p>
                 </CardHeader>
                 <CardContent>
                   {meal.description && (
-                    <p className="text-gray-600 mb-3">{meal.description}</p>
+                    <p className="text-text-secondary dark:text-text-dark-secondary mb-3">{meal.description}</p>
                   )}
-                  <p className="text-sm text-gray-500 mb-3">
+                  <p className="text-sm text-text-secondary dark:text-text-dark-secondary mb-3">
                     Porciones: {meal.servingSize || 1}
                   </p>
                   <div className="flex gap-2">
@@ -192,12 +192,12 @@ export default function MealsPage() {
               <Card key={plan.id}>
                 <CardHeader>
                   <CardTitle>{plan.meal?.name || 'Comida'}</CardTitle>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-text-secondary dark:text-text-dark-secondary mt-1">
                     {new Date(plan.mealDate).toLocaleDateString('es-ES')}
                   </p>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-3">{plan.mealType}</p>
+                  <p className="text-text-secondary dark:text-text-dark-secondary mb-3">{plan.mealType}</p>
                   {plan.isCompleted && (
                     <div className="flex items-center gap-2 text-green-600">
                       <CheckCircle className="w-4 h-4" />
@@ -223,22 +223,22 @@ export default function MealsPage() {
               required
             />
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-1">
                 Descripción
               </label>
               <textarea
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary bg-bg-surface dark:bg-bg-dark-surface text-text-primary dark:text-text-dark-primary"
                 value={mealFormData.description}
                 onChange={(e) => setMealFormData({ ...mealFormData, description: e.target.value })}
                 rows={3}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-1">
                 Tipo de Comida
               </label>
               <select
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary bg-bg-surface dark:bg-bg-dark-surface text-text-primary dark:text-text-dark-primary"
                 value={mealFormData.mealType}
                 onChange={(e) => setMealFormData({ ...mealFormData, mealType: e.target.value as any })}
                 required

@@ -68,11 +68,11 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 py-12">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen flex items-center justify-center bg-bg-app dark:bg-bg-dark-app py-12">
+      <div className="max-w-md w-full bg-bg-surface dark:bg-bg-dark-surface rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Pland-IA</h1>
-          <p className="text-gray-600 mt-2">Crea tu cuenta gratis</p>
+          <h1 className="text-3xl font-bold font-mono text-brand-primary dark:text-brand-primary">BatPlan</h1>
+          <p className="text-text-secondary dark:text-text-dark-secondary mt-2">Crea tu cuenta gratis</p>
         </div>
 
         {error && (
@@ -83,7 +83,7 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="name" className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-2">
               Nombre completo
             </label>
             <input
@@ -92,13 +92,13 @@ export default function RegisterPage() {
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-gray-900 placeholder:text-gray-400 bg-white"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition text-text-primary dark:text-text-dark-primary placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary bg-bg-surface dark:bg-bg-dark-surface"
               placeholder="Juan Pérez"
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-2">
               Email
             </label>
             <input
@@ -107,13 +107,13 @@ export default function RegisterPage() {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-gray-900 placeholder:text-gray-400 bg-white"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition text-text-primary dark:text-text-dark-primary placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary bg-bg-surface dark:bg-bg-dark-surface"
               placeholder="tu@email.com"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-2">
               Contraseña
             </label>
             <input
@@ -122,13 +122,13 @@ export default function RegisterPage() {
               required
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-gray-900 placeholder:text-gray-400 bg-white"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition text-text-primary dark:text-text-dark-primary placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary bg-bg-surface dark:bg-bg-dark-surface"
               placeholder="Mínimo 6 caracteres"
             />
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-2">
               Confirmar contraseña
             </label>
             <input
@@ -137,7 +137,7 @@ export default function RegisterPage() {
               required
               value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-gray-900 placeholder:text-gray-400 bg-white"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition text-text-primary dark:text-text-dark-primary placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary bg-bg-surface dark:bg-bg-dark-surface"
               placeholder="Repite tu contraseña"
             />
           </div>
@@ -148,9 +148,9 @@ export default function RegisterPage() {
               id="rememberMe"
               checked={formData.rememberMe}
               onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
-              className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              className="w-4 h-4 text-brand-primary border-gray-300 dark:border-gray-600 rounded focus:ring-brand-primary"
             />
-            <label htmlFor="rememberMe" className="ml-2 text-sm text-gray-700">
+            <label htmlFor="rememberMe" className="ml-2 text-sm text-text-primary dark:text-text-dark-primary">
               Mantener sesión iniciada
             </label>
           </div>
@@ -158,22 +158,22 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            className="w-full bg-brand-primary text-text-inverse py-3 rounded-lg font-medium hover:bg-brand-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
             {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-600">
+        <p className="mt-6 text-center text-sm text-text-secondary dark:text-text-dark-secondary">
           ¿Ya tienes cuenta?{' '}
-          <Link href="/login" className="text-indigo-600 hover:text-indigo-500 font-medium">
+          <Link href="/login" className="text-brand-primary hover:text-brand-primary/80 font-medium">
             Inicia sesión
           </Link>
         </p>
 
-        <p className="mt-4 text-center text-xs text-gray-500">
+        <p className="mt-4 text-center text-xs text-text-secondary dark:text-text-dark-secondary">
           Al registrarte, aceptas nuestros{' '}
-          <Link href="/terms" className="text-indigo-600 hover:underline">
+          <Link href="/terms" className="text-brand-primary hover:underline">
             Términos de Servicio
           </Link>
         </p>

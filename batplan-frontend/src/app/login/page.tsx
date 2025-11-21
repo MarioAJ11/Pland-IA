@@ -47,11 +47,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen flex items-center justify-center bg-bg-app dark:bg-bg-dark-app">
+      <div className="max-w-md w-full bg-bg-surface dark:bg-bg-dark-surface rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Pland-IA</h1>
-          <p className="text-gray-600 mt-2">Inicia sesión en tu cuenta</p>
+          <h1 className="text-3xl font-bold font-mono text-brand-primary dark:text-brand-primary">BatPlan</h1>
+          <p className="text-text-secondary dark:text-text-dark-secondary mt-2">Inicia sesión en tu cuenta</p>
         </div>
 
         {error && (
@@ -62,7 +62,7 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-2">
               Email
             </label>
             <input
@@ -71,13 +71,13 @@ export default function LoginPage() {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-gray-900 placeholder:text-gray-400 bg-white"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition text-text-primary dark:text-text-dark-primary placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary bg-bg-surface dark:bg-bg-dark-surface"
               placeholder="tu@email.com"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-2">
               Contraseña
             </label>
             <input
@@ -86,7 +86,7 @@ export default function LoginPage() {
               required
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-gray-900 placeholder:text-gray-400 bg-white"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition text-text-primary dark:text-text-dark-primary placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary bg-bg-surface dark:bg-bg-dark-surface"
               placeholder="••••••••"
             />
           </div>
@@ -97,12 +97,12 @@ export default function LoginPage() {
                 type="checkbox"
                 checked={formData.rememberMe}
                 onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
-                className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                className="w-4 h-4 text-brand-primary border-gray-300 dark:border-gray-600 rounded focus:ring-brand-primary"
               />
-              <span className="ml-2 text-sm text-gray-700">Recuérdame</span>
+              <span className="ml-2 text-sm text-text-primary dark:text-text-dark-primary">Recuérdame</span>
             </label>
 
-            <Link href="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-500">
+            <Link href="/forgot-password" className="text-sm text-brand-primary hover:text-brand-primary/80">
               ¿Olvidaste tu contraseña?
             </Link>
           </div>
@@ -110,15 +110,15 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            className="w-full bg-brand-primary text-text-inverse py-3 rounded-lg font-medium hover:bg-brand-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
             {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-600">
+        <p className="mt-6 text-center text-sm text-text-secondary dark:text-text-dark-secondary">
           ¿No tienes cuenta?{' '}
-          <Link href="/register" className="text-indigo-600 hover:text-indigo-500 font-medium">
+          <Link href="/register" className="text-brand-primary hover:text-brand-primary/80 font-medium">
             Regístrate gratis
           </Link>
         </p>

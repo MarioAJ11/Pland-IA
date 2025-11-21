@@ -98,12 +98,12 @@ export default function CalendarPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-bg-app dark:bg-bg-dark-app p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-3">
-            <Calendar className="w-8 h-8 text-indigo-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Calendario</h1>
+            <Calendar className="w-8 h-8 text-brand-primary" />
+            <h1 className="text-3xl font-bold text-text-primary dark:text-text-dark-primary">Calendario</h1>
           </div>
           <Button onClick={() => { resetForm(); setIsModalOpen(true); }}>
             <Plus className="w-4 h-4 mr-2" />
@@ -116,16 +116,16 @@ export default function CalendarPage() {
             <Card key={event.id}>
               <CardHeader>
                 <CardTitle>{event.title}</CardTitle>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-text-secondary dark:text-text-dark-secondary mt-1">
                   {formatDate(event.startTime)} - {formatTime(event.startTime)}
                 </p>
               </CardHeader>
               <CardContent>
                 {event.description && (
-                  <p className="text-gray-600 mb-3">{event.description}</p>
+                  <p className="text-text-secondary dark:text-text-dark-secondary mb-3">{event.description}</p>
                 )}
                 {event.location && (
-                  <p className="text-sm text-gray-500 mb-3">
+                  <p className="text-sm text-text-secondary dark:text-text-dark-secondary mb-3">
                     Ubicación: {event.location}
                   </p>
                 )}
@@ -155,11 +155,11 @@ export default function CalendarPage() {
               required
             />
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-1">
                 Descripción
               </label>
               <textarea
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary bg-bg-surface dark:bg-bg-dark-surface text-text-primary dark:text-text-dark-primary"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}

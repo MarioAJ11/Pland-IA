@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BatPlan Logo - Murciélago Boca Abajo</title>
+  <style>
+    /* Variables de Color BatPlan */
+    :root {
+      --bat-purple: #4A148C;
+      --bat-violet: #6A1B9A;
+      --bat-lavender: #9C4DCC;
+      --bat-shadow: #1A0033;
+      --eerie-black: #232323;
+      --cod-gray: #0D0D0D;
+      --bat-eye-red: #FF4444;
+      --titan-white: #EEEEFF;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--bat-shadow) 0%, var(--eerie-black) 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .logo-container {
+      text-align: center;
+    }
+
+    /* Logo del Murciélago Boca Abajo (Pixel Art) */
+    .bat-logo {
+      width: 1px;
+      height: 1px;
+      transform: scale(3);
+      position: relative;
+      margin: 100px auto;
+      filter: drop-shadow(0 0 20px rgba(156, 77, 204, 0.5));
+    }
+
+    /* Murciélago Boca Abajo - Posición de reposo */
+    .bat-logo.hanging {
+      box-shadow:
+        /* Cabeza y orejas */
+        21px 0px var(--bat-purple), 22px 0px var(--bat-purple), 23px 0px var(--bat-purple),
+        20px 1px var(--bat-purple), 21px 1px var(--eerie-black), 22px 1px var(--eerie-black), 23px 1px var(--eerie-black), 24px 1px var(--bat-purple),
+        19px 2px var(--bat-purple), 20px 2px var(--eerie-black), 21px 2px var(--eerie-black), 22px 2px var(--eerie-black), 23px 2px var(--eerie-black), 24px 2px var(--eerie-black), 25px 2px var(--bat-purple),
+        
+        /* Ojos */
+        19px 3px var(--bat-purple), 20px 3px var(--eerie-black), 21px 3px var(--bat-eye-red), 22px 3px var(--eerie-black), 23px 3px var(--bat-eye-red), 24px 3px var(--eerie-black), 25px 3px var(--bat-purple),
+        
+        /* Cuerpo superior */
+        18px 4px var(--bat-purple), 19px 4px var(--eerie-black), 20px 4px var(--eerie-black), 21px 4px var(--eerie-black), 22px 4px var(--eerie-black), 23px 4px var(--eerie-black), 24px 4px var(--eerie-black), 25px 4px var(--eerie-black), 26px 4px var(--bat-purple),
+        18px 5px var(--bat-purple), 19px 5px var(--eerie-black), 20px 5px var(--eerie-black), 21px 5px var(--eerie-black), 22px 5px var(--eerie-black), 23px 5px var(--eerie-black), 24px 5px var(--eerie-black), 25px 5px var(--eerie-black), 26px 5px var(--bat-purple),
+        
+        /* Cuerpo con alas recogidas */
+        17px 6px var(--bat-purple), 18px 6px var(--eerie-black), 19px 6px var(--eerie-black), 20px 6px var(--eerie-black), 21px 6px var(--eerie-black), 22px 6px var(--eerie-black), 23px 6px var(--eerie-black), 24px 6px var(--eerie-black), 25px 6px var(--eerie-black), 26px 6px var(--eerie-black), 27px 6px var(--bat-purple),
+        17px 7px var(--bat-purple), 18px 7px var(--eerie-black), 19px 7px var(--eerie-black), 20px 7px var(--eerie-black), 21px 7px var(--eerie-black), 22px 7px var(--eerie-black), 23px 7px var(--eerie-black), 24px 7px var(--eerie-black), 25px 7px var(--eerie-black), 26px 7px var(--eerie-black), 27px 7px var(--bat-purple),
+        
+        /* Parte inferior del cuerpo */
+        18px 8px var(--bat-purple), 19px 8px var(--eerie-black), 20px 8px var(--eerie-black), 21px 8px var(--eerie-black), 22px 8px var(--eerie-black), 23px 8px var(--eerie-black), 24px 8px var(--eerie-black), 25px 8px var(--eerie-black), 26px 8px var(--bat-purple),
+        19px 9px var(--bat-purple), 20px 9px var(--eerie-black), 21px 9px var(--eerie-black), 22px 9px var(--eerie-black), 23px 9px var(--eerie-black), 24px 9px var(--eerie-black), 25px 9px var(--bat-purple),
+        
+        /* Patas */
+        20px 10px var(--bat-purple), 21px 10px var(--bat-purple), 22px 10px var(--bat-purple), 23px 10px var(--bat-purple), 24px 10px var(--bat-purple),
+        21px 11px var(--bat-purple), 22px 11px var(--bat-purple), 23px 11px var(--bat-purple);
+    }
+
+    /* Nombre de la marca */
+    .brand-name {
+      margin-top: 120px;
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--bat-purple) 0%, var(--bat-lavender) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .tagline {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--bat-lavender);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+
+    /* Efecto de brillo suave */
+    @keyframes glow {
+      0%, 100% {
+        filter: drop-shadow(0 0 20px rgba(156, 77, 204, 0.5));
+      }
+      50% {
+        filter: drop-shadow(0 0 30px rgba(156, 77, 204, 0.8));
+      }
+    }
+
+    .bat-logo {
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    /* Versión alternativa con alas semi-abiertas */
+    .bat-logo.semi-open {
+      box-shadow:
+        /* Oreja izquierda */
+        16px 0px var(--bat-purple), 17px 0px var(--bat-purple),
+        /* Cabeza */
+        21px 0px var(--bat-purple), 22px 0px var(--bat-purple), 23px 0px var(--bat-purple),
+        /* Oreja derecha */
+        27px 0px var(--bat-purple), 28px 0px var(--bat-purple),
+        
+        15px 1px var(--bat-purple), 16px 1px var(--eerie-black), 17px 1px var(--bat-purple),
+        20px 1px var(--bat-purple), 21px 1px var(--eerie-black), 22px 1px var(--eerie-black), 23px 1px var(--eerie-black), 24px 1px var(--bat-purple),
+        27px 1px var(--bat-purple), 28px 1px var(--eerie-black), 29px 1px var(--bat-purple),
+        
+        /* Ala izquierda extendida */
+        14px 2px var(--bat-purple), 15px 2px var(--eerie-black), 16px 2px var(--eerie-black), 17px 2px var(--bat-purple),
+        /* Cuerpo */
+        19px 2px var(--bat-purple), 20px 2px var(--eerie-black), 21px 2px var(--eerie-black), 22px 2px var(--eerie-black), 23px 2px var(--eerie-black), 24px 2px var(--eerie-black), 25px 2px var(--bat-purple),
+        /* Ala derecha */
+        27px 2px var(--bat-purple), 28px 2px var(--eerie-black), 29px 2px var(--eerie-black), 30px 2px var(--bat-purple),
+        
+        /* Ojos */
+        13px 3px var(--bat-purple), 14px 3px var(--eerie-black), 15px 3px var(--eerie-black), 16px 3px var(--eerie-black), 17px 3px var(--bat-purple),
+        19px 3px var(--bat-purple), 20px 3px var(--eerie-black), 21px 3px var(--bat-eye-red), 22px 3px var(--eerie-black), 23px 3px var(--bat-eye-red), 24px 3px var(--eerie-black), 25px 3px var(--bat-purple),
+        27px 3px var(--bat-purple), 28px 3px var(--eerie-black), 29px 3px var(--eerie-black), 30px 3px var(--eerie-black), 31px 3px var(--bat-purple),
+        
+        /* Cuerpo expandido */
+        12px 4px var(--bat-purple), 13px 4px var(--eerie-black), 14px 4px var(--eerie-black), 15px 4px var(--eerie-black), 16px 4px var(--eerie-black), 17px 4px var(--bat-purple),
+        18px 4px var(--bat-purple), 19px 4px var(--eerie-black), 20px 4px var(--eerie-black), 21px 4px var(--eerie-black), 22px 4px var(--eerie-black), 23px 4px var(--eerie-black), 24px 4px var(--eerie-black), 25px 4px var(--eerie-black), 26px 4px var(--bat-purple),
+        27px 4px var(--bat-purple), 28px 4px var(--eerie-black), 29px 4px var(--eerie-black), 30px 4px var(--eerie-black), 31px 4px var(--eerie-black), 32px 4px var(--bat-purple),
+        
+        11px 5px var(--bat-purple), 12px 5px var(--eerie-black), 13px 5px var(--eerie-black), 14px 5px var(--eerie-black), 15px 5px var(--eerie-black), 16px 5px var(--eerie-black), 17px 5px var(--bat-purple),
+        18px 5px var(--bat-purple), 19px 5px var(--eerie-black), 20px 5px var(--eerie-black), 21px 5px var(--eerie-black), 22px 5px var(--eerie-black), 23px 5px var(--eerie-black), 24px 5px var(--eerie-black), 25px 5px var(--eerie-black), 26px 5px var(--bat-purple),
+        27px 5px var(--bat-purple), 28px 5px var(--eerie-black), 29px 5px var(--eerie-black), 30px 5px var(--eerie-black), 31px 5px var(--eerie-black), 32px 5px var(--eerie-black), 33px 5px var(--bat-purple),
+        
+        10px 6px var(--bat-purple), 11px 6px var(--eerie-black), 12px 6px var(--eerie-black), 13px 6px var(--eerie-black), 14px 6px var(--eerie-black), 15px 6px var(--eerie-black), 16px 6px var(--eerie-black), 17px 6px var(--bat-purple),
+        18px 6px var(--bat-purple), 19px 6px var(--eerie-black), 20px 6px var(--eerie-black), 21px 6px var(--eerie-black), 22px 6px var(--eerie-black), 23px 6px var(--eerie-black), 24px 6px var(--eerie-black), 25px 6px var(--eerie-black), 26px 6px var(--bat-purple),
+        27px 6px var(--bat-purple), 28px 6px var(--eerie-black), 29px 6px var(--eerie-black), 30px 6px var(--eerie-black), 31px 6px var(--eerie-black), 32px 6px var(--eerie-black), 33px 6px var(--eerie-black), 34px 6px var(--bat-purple),
+        
+        10px 7px var(--bat-purple), 11px 7px var(--eerie-black), 12px 7px var(--eerie-black), 13px 7px var(--eerie-black), 14px 7px var(--eerie-black), 15px 7px var(--eerie-black), 16px 7px var(--eerie-black), 17px 7px var(--bat-purple),
+        18px 7px var(--bat-purple), 19px 7px var(--eerie-black), 20px 7px var(--eerie-black), 21px 7px var(--eerie-black), 22px 7px var(--eerie-black), 23px 7px var(--eerie-black), 24px 7px var(--eerie-black), 25px 7px var(--eerie-black), 26px 7px var(--bat-purple),
+        27px 7px var(--bat-purple), 28px 7px var(--eerie-black), 29px 7px var(--eerie-black), 30px 7px var(--eerie-black), 31px 7px var(--eerie-black), 32px 7px var(--eerie-black), 33px 7px var(--eerie-black), 34px 7px var(--bat-purple),
+        
+        11px 8px var(--bat-purple), 12px 8px var(--eerie-black), 13px 8px var(--eerie-black), 14px 8px var(--eerie-black), 15px 8px var(--eerie-black), 16px 8px var(--bat-purple),
+        18px 8px var(--bat-purple), 19px 8px var(--eerie-black), 20px 8px var(--eerie-black), 21px 8px var(--eerie-black), 22px 8px var(--eerie-black), 23px 8px var(--eerie-black), 24px 8px var(--eerie-black), 25px 8px var(--eerie-black), 26px 8px var(--bat-purple),
+        28px 8px var(--bat-purple), 29px 8px var(--eerie-black), 30px 8px var(--eerie-black), 31px 8px var(--eerie-black), 32px 8px var(--eerie-black), 33px 8px var(--bat-purple),
+        
+        12px 9px var(--bat-purple), 13px 9px var(--bat-purple), 14px 9px var(--bat-purple), 15px 9px var(--bat-purple),
+        19px 9px var(--bat-purple), 20px 9px var(--eerie-black), 21px 9px var(--eerie-black), 22px 9px var(--eerie-black), 23px 9px var(--eerie-black), 24px 9px var(--eerie-black), 25px 9px var(--bat-purple),
+        29px 9px var(--bat-purple), 30px 9px var(--bat-purple), 31px 9px var(--bat-purple), 32px 9px var(--bat-purple),
+        
+        20px 10px var(--bat-purple), 21px 10px var(--bat-purple), 22px 10px var(--bat-purple), 23px 10px var(--bat-purple), 24px 10px var(--bat-purple),
+        21px 11px var(--bat-purple), 22px 11px var(--bat-purple), 23px 11px var(--bat-purple);
+    }
+
+    /* Controles de vista */
+    .controls {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      background: var(--bat-purple);
+      color: var(--titan-white);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .btn:hover {
+      background: var(--bat-violet);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(74, 20, 140, 0.4);
+    }
+
+    .btn.active {
+      background: var(--bat-lavender);
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <div class="bat-logo hanging" id="batLogo"></div>
+    <h1 class="brand-name">BatPlan</h1>
+    <p class="tagline">Plan Nocturno</p>
+  </div>
+
+  <div class="controls">
+    <button class="btn active" onclick="showHanging()">Boca Abajo</button>
+    <button class="btn" onclick="showSemiOpen()">Alas Semi-Abiertas</button>
+  </div>
+
+  <script>
+    const batLogo = document.getElementById('batLogo');
+    const buttons = document.querySelectorAll('.btn');
+
+    function showHanging() {
+      batLogo.className = 'bat-logo hanging';
+      updateActiveButton(0);
+    }
+
+    function showSemiOpen() {
+      batLogo.className = 'bat-logo semi-open';
+      updateActiveButton(1);
+    }
+
+    function updateActiveButton(index) {
+      buttons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+    }
+  </script>
+</body>
+</html>

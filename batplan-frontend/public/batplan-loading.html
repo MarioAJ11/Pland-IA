@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BatPlan - Animación de Carga</title>
+  <style>
+    :root {
+      --bat-purple: #4A148C;
+      --bat-violet: #6A1B9A;
+      --bat-lavender: #9C4DCC;
+      --bat-shadow: #1A0033;
+      --eerie-black: #232323;
+      --cod-gray: #0D0D0D;
+      --bat-eye-red: #FF4444;
+      --titan-white: #EEEEFF;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--bat-shadow) 0%, var(--eerie-black) 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .loading-screen {
+      text-align: center;
+      position: relative;
+    }
+
+    /* Murciélago Pixel Art */
+    .bat {
+      width: 1px;
+      height: 1px;
+      transform: scale(4);
+      position: relative;
+      margin: 0 auto;
+      filter: drop-shadow(0 0 20px rgba(156, 77, 204, 0.6));
+    }
+
+    /* Frame 1: Murciélago boca abajo con alas recogidas */
+    .bat.frame-1 {
+      box-shadow:
+        21px 0px var(--bat-purple), 22px 0px var(--bat-purple), 23px 0px var(--bat-purple),
+        20px 1px var(--bat-purple), 21px 1px var(--eerie-black), 22px 1px var(--eerie-black), 23px 1px var(--eerie-black), 24px 1px var(--bat-purple),
+        19px 2px var(--bat-purple), 20px 2px var(--eerie-black), 21px 2px var(--eerie-black), 22px 2px var(--eerie-black), 23px 2px var(--eerie-black), 24px 2px var(--eerie-black), 25px 2px var(--bat-purple),
+        19px 3px var(--bat-purple), 20px 3px var(--eerie-black), 21px 3px var(--bat-eye-red), 22px 3px var(--eerie-black), 23px 3px var(--bat-eye-red), 24px 3px var(--eerie-black), 25px 3px var(--bat-purple),
+        18px 4px var(--bat-purple), 19px 4px var(--eerie-black), 20px 4px var(--eerie-black), 21px 4px var(--eerie-black), 22px 4px var(--eerie-black), 23px 4px var(--eerie-black), 24px 4px var(--eerie-black), 25px 4px var(--eerie-black), 26px 4px var(--bat-purple),
+        18px 5px var(--bat-purple), 19px 5px var(--eerie-black), 20px 5px var(--eerie-black), 21px 5px var(--eerie-black), 22px 5px var(--eerie-black), 23px 5px var(--eerie-black), 24px 5px var(--eerie-black), 25px 5px var(--eerie-black), 26px 5px var(--bat-purple),
+        17px 6px var(--bat-purple), 18px 6px var(--eerie-black), 19px 6px var(--eerie-black), 20px 6px var(--eerie-black), 21px 6px var(--eerie-black), 22px 6px var(--eerie-black), 23px 6px var(--eerie-black), 24px 6px var(--eerie-black), 25px 6px var(--eerie-black), 26px 6px var(--eerie-black), 27px 6px var(--bat-purple),
+        17px 7px var(--bat-purple), 18px 7px var(--eerie-black), 19px 7px var(--eerie-black), 20px 7px var(--eerie-black), 21px 7px var(--eerie-black), 22px 7px var(--eerie-black), 23px 7px var(--eerie-black), 24px 7px var(--eerie-black), 25px 7px var(--eerie-black), 26px 7px var(--eerie-black), 27px 7px var(--bat-purple),
+        18px 8px var(--bat-purple), 19px 8px var(--eerie-black), 20px 8px var(--eerie-black), 21px 8px var(--eerie-black), 22px 8px var(--eerie-black), 23px 8px var(--eerie-black), 24px 8px var(--eerie-black), 25px 8px var(--eerie-black), 26px 8px var(--bat-purple),
+        19px 9px var(--bat-purple), 20px 9px var(--eerie-black), 21px 9px var(--eerie-black), 22px 9px var(--eerie-black), 23px 9px var(--eerie-black), 24px 9px var(--eerie-black), 25px 9px var(--bat-purple),
+        20px 10px var(--bat-purple), 21px 10px var(--bat-purple), 22px 10px var(--bat-purple), 23px 10px var(--bat-purple), 24px 10px var(--bat-purple),
+        21px 11px var(--bat-purple), 22px 11px var(--bat-purple), 23px 11px var(--bat-purple);
+    }
+
+    /* Frame 2: Alas empiezan a abrirse */
+    .bat.frame-2 {
+      box-shadow:
+        16px 0px var(--bat-purple), 17px 0px var(--bat-purple),
+        21px 0px var(--bat-purple), 22px 0px var(--bat-purple), 23px 0px var(--bat-purple),
+        27px 0px var(--bat-purple), 28px 0px var(--bat-purple),
+        
+        15px 1px var(--bat-purple), 16px 1px var(--eerie-black), 17px 1px var(--bat-purple),
+        20px 1px var(--bat-purple), 21px 1px var(--eerie-black), 22px 1px var(--eerie-black), 23px 1px var(--eerie-black), 24px 1px var(--bat-purple),
+        27px 1px var(--bat-purple), 28px 1px var(--eerie-black), 29px 1px var(--bat-purple),
+        
+        14px 2px var(--bat-purple), 15px 2px var(--eerie-black), 16px 2px var(--eerie-black), 17px 2px var(--bat-purple),
+        19px 2px var(--bat-purple), 20px 2px var(--eerie-black), 21px 2px var(--eerie-black), 22px 2px var(--eerie-black), 23px 2px var(--eerie-black), 24px 2px var(--eerie-black), 25px 2px var(--bat-purple),
+        27px 2px var(--bat-purple), 28px 2px var(--eerie-black), 29px 2px var(--eerie-black), 30px 2px var(--bat-purple),
+        
+        13px 3px var(--bat-purple), 14px 3px var(--eerie-black), 15px 3px var(--eerie-black), 16px 3px var(--eerie-black), 17px 3px var(--bat-purple),
+        19px 3px var(--bat-purple), 20px 3px var(--eerie-black), 21px 3px var(--bat-eye-red), 22px 3px var(--eerie-black), 23px 3px var(--bat-eye-red), 24px 3px var(--eerie-black), 25px 3px var(--bat-purple),
+        27px 3px var(--bat-purple), 28px 3px var(--eerie-black), 29px 3px var(--eerie-black), 30px 3px var(--eerie-black), 31px 3px var(--bat-purple),
+        
+        12px 4px var(--bat-purple), 13px 4px var(--eerie-black), 14px 4px var(--eerie-black), 15px 4px var(--eerie-black), 16px 4px var(--eerie-black), 17px 4px var(--bat-purple),
+        18px 4px var(--bat-purple), 19px 4px var(--eerie-black), 20px 4px var(--eerie-black), 21px 4px var(--eerie-black), 22px 4px var(--eerie-black), 23px 4px var(--eerie-black), 24px 4px var(--eerie-black), 25px 4px var(--eerie-black), 26px 4px var(--bat-purple),
+        27px 4px var(--bat-purple), 28px 4px var(--eerie-black), 29px 4px var(--eerie-black), 30px 4px var(--eerie-black), 31px 4px var(--eerie-black), 32px 4px var(--bat-purple),
+        
+        11px 5px var(--bat-purple), 12px 5px var(--eerie-black), 13px 5px var(--eerie-black), 14px 5px var(--eerie-black), 15px 5px var(--eerie-black), 16px 5px var(--eerie-black), 17px 5px var(--bat-purple),
+        18px 5px var(--bat-purple), 19px 5px var(--eerie-black), 20px 5px var(--eerie-black), 21px 5px var(--eerie-black), 22px 5px var(--eerie-black), 23px 5px var(--eerie-black), 24px 5px var(--eerie-black), 25px 5px var(--eerie-black), 26px 5px var(--bat-purple),
+        27px 5px var(--bat-purple), 28px 5px var(--eerie-black), 29px 5px var(--eerie-black), 30px 5px var(--eerie-black), 31px 5px var(--eerie-black), 32px 5px var(--eerie-black), 33px 5px var(--bat-purple),
+        
+        10px 6px var(--bat-purple), 11px 6px var(--eerie-black), 12px 6px var(--eerie-black), 13px 6px var(--eerie-black), 14px 6px var(--eerie-black), 15px 6px var(--eerie-black), 16px 6px var(--eerie-black), 17px 6px var(--bat-purple),
+        18px 6px var(--bat-purple), 19px 6px var(--eerie-black), 20px 6px var(--eerie-black), 21px 6px var(--eerie-black), 22px 6px var(--eerie-black), 23px 6px var(--eerie-black), 24px 6px var(--eerie-black), 25px 6px var(--eerie-black), 26px 6px var(--bat-purple),
+        27px 6px var(--bat-purple), 28px 6px var(--eerie-black), 29px 6px var(--eerie-black), 30px 6px var(--eerie-black), 31px 6px var(--eerie-black), 32px 6px var(--eerie-black), 33px 6px var(--eerie-black), 34px 6px var(--bat-purple),
+        
+        10px 7px var(--bat-purple), 11px 7px var(--eerie-black), 12px 7px var(--eerie-black), 13px 7px var(--eerie-black), 14px 7px var(--eerie-black), 15px 7px var(--eerie-black), 16px 7px var(--eerie-black), 17px 7px var(--bat-purple),
+        18px 7px var(--bat-purple), 19px 7px var(--eerie-black), 20px 7px var(--eerie-black), 21px 7px var(--eerie-black), 22px 7px var(--eerie-black), 23px 7px var(--eerie-black), 24px 7px var(--eerie-black), 25px 7px var(--eerie-black), 26px 7px var(--bat-purple),
+        27px 7px var(--bat-purple), 28px 7px var(--eerie-black), 29px 7px var(--eerie-black), 30px 7px var(--eerie-black), 31px 7px var(--eerie-black), 32px 7px var(--eerie-black), 33px 7px var(--eerie-black), 34px 7px var(--bat-purple),
+        
+        11px 8px var(--bat-purple), 12px 8px var(--eerie-black), 13px 8px var(--eerie-black), 14px 8px var(--eerie-black), 15px 8px var(--eerie-black), 16px 8px var(--bat-purple),
+        18px 8px var(--bat-purple), 19px 8px var(--eerie-black), 20px 8px var(--eerie-black), 21px 8px var(--eerie-black), 22px 8px var(--eerie-black), 23px 8px var(--eerie-black), 24px 8px var(--eerie-black), 25px 8px var(--eerie-black), 26px 8px var(--bat-purple),
+        28px 8px var(--bat-purple), 29px 8px var(--eerie-black), 30px 8px var(--eerie-black), 31px 8px var(--eerie-black), 32px 8px var(--eerie-black), 33px 8px var(--bat-purple),
+        
+        12px 9px var(--bat-purple), 13px 9px var(--bat-purple), 14px 9px var(--bat-purple), 15px 9px var(--bat-purple),
+        19px 9px var(--bat-purple), 20px 9px var(--eerie-black), 21px 9px var(--eerie-black), 22px 9px var(--eerie-black), 23px 9px var(--eerie-black), 24px 9px var(--eerie-black), 25px 9px var(--bat-purple),
+        29px 9px var(--bat-purple), 30px 9px var(--bat-purple), 31px 9px var(--bat-purple), 32px 9px var(--bat-purple),
+        
+        20px 10px var(--bat-purple), 21px 10px var(--bat-purple), 22px 10px var(--bat-purple), 23px 10px var(--bat-purple), 24px 10px var(--bat-purple),
+        21px 11px var(--bat-purple), 22px 11px var(--bat-purple), 23px 11px var(--bat-purple);
+    }
+
+    /* Frame 3: Alas completamente abiertas (aleteo arriba) */
+    .bat.frame-3 {
+      box-shadow:
+        /* Ala izquierda extendida */
+        10px 0px var(--bat-purple), 11px 0px var(--bat-purple), 12px 0px var(--bat-purple),
+        16px 0px var(--bat-purple), 17px 0px var(--bat-purple),
+        /* Cabeza */
+        21px 0px var(--bat-purple), 22px 0px var(--bat-purple), 23px 0px var(--bat-purple),
+        /* Ala derecha */
+        27px 0px var(--bat-purple), 28px 0px var(--bat-purple),
+        32px 0px var(--bat-purple), 33px 0px var(--bat-purple), 34px 0px var(--bat-purple),
+        
+        9px 1px var(--bat-purple), 10px 1px var(--eerie-black), 11px 1px var(--eerie-black), 12px 1px var(--eerie-black), 13px 1px var(--bat-purple),
+        15px 1px var(--bat-purple), 16px 1px var(--eerie-black), 17px 1px var(--bat-purple),
+        20px 1px var(--bat-purple), 21px 1px var(--eerie-black), 22px 1px var(--eerie-black), 23px 1px var(--eerie-black), 24px 1px var(--bat-purple),
+        27px 1px var(--bat-purple), 28px 1px var(--eerie-black), 29px 1px var(--bat-purple),
+        31px 1px var(--bat-purple), 32px 1px var(--eerie-black), 33px 1px var(--eerie-black), 34px 1px var(--eerie-black), 35px 1px var(--bat-purple),
+        
+        8px 2px var(--bat-purple), 9px 2px var(--eerie-black), 10px 2px var(--eerie-black), 11px 2px var(--eerie-black), 12px 2px var(--eerie-black), 13px 2px var(--eerie-black), 14px 2px var(--bat-purple),
+        15px 2px var(--bat-purple), 16px 2px var(--eerie-black), 17px 2px var(--bat-purple),
+        19px 2px var(--bat-purple), 20px 2px var(--eerie-black), 21px 2px var(--eerie-black), 22px 2px var(--eerie-black), 23px 2px var(--eerie-black), 24px 2px var(--eerie-black), 25px 2px var(--bat-purple),
+        27px 2px var(--bat-purple), 28px 2px var(--eerie-black), 29px 2px var(--bat-purple),
+        30px 2px var(--bat-purple), 31px 2px var(--eerie-black), 32px 2px var(--eerie-black), 33px 2px var(--eerie-black), 34px 2px var(--eerie-black), 35px 2px var(--eerie-black), 36px 2px var(--bat-purple),
+        
+        7px 3px var(--bat-purple), 8px 3px var(--eerie-black), 9px 3px var(--eerie-black), 10px 3px var(--eerie-black), 11px 3px var(--eerie-black), 12px 3px var(--eerie-black), 13px 3px var(--eerie-black), 14px 3px var(--bat-purple),
+        15px 3px var(--bat-purple), 16px 3px var(--eerie-black), 17px 3px var(--bat-purple),
+        19px 3px var(--bat-purple), 20px 3px var(--eerie-black), 21px 3px var(--bat-eye-red), 22px 3px var(--eerie-black), 23px 3px var(--bat-eye-red), 24px 3px var(--eerie-black), 25px 3px var(--bat-purple),
+        27px 3px var(--bat-purple), 28px 3px var(--eerie-black), 29px 3px var(--bat-purple),
+        30px 3px var(--bat-purple), 31px 3px var(--eerie-black), 32px 3px var(--eerie-black), 33px 3px var(--eerie-black), 34px 3px var(--eerie-black), 35px 3px var(--eerie-black), 36px 3px var(--eerie-black), 37px 3px var(--bat-purple),
+        
+        6px 4px var(--bat-purple), 7px 4px var(--eerie-black), 8px 4px var(--eerie-black), 9px 4px var(--eerie-black), 10px 4px var(--eerie-black), 11px 4px var(--eerie-black), 12px 4px var(--eerie-black), 13px 4px var(--eerie-black), 14px 4px var(--bat-purple),
+        18px 4px var(--bat-purple), 19px 4px var(--eerie-black), 20px 4px var(--eerie-black), 21px 4px var(--eerie-black), 22px 4px var(--eerie-black), 23px 4px var(--eerie-black), 24px 4px var(--eerie-black), 25px 4px var(--eerie-black), 26px 4px var(--bat-purple),
+        30px 4px var(--bat-purple), 31px 4px var(--eerie-black), 32px 4px var(--eerie-black), 33px 4px var(--eerie-black), 34px 4px var(--eerie-black), 35px 4px var(--eerie-black), 36px 4px var(--eerie-black), 37px 4px var(--eerie-black), 38px 4px var(--bat-purple),
+        
+        5px 5px var(--bat-purple), 6px 5px var(--eerie-black), 7px 5px var(--eerie-black), 8px 5px var(--eerie-black), 9px 5px var(--eerie-black), 10px 5px var(--eerie-black), 11px 5px var(--eerie-black), 12px 5px var(--eerie-black), 13px 5px var(--eerie-black), 14px 5px var(--bat-purple),
+        18px 5px var(--bat-purple), 19px 5px var(--eerie-black), 20px 5px var(--eerie-black), 21px 5px var(--eerie-black), 22px 5px var(--eerie-black), 23px 5px var(--eerie-black), 24px 5px var(--eerie-black), 25px 5px var(--eerie-black), 26px 5px var(--bat-purple),
+        30px 5px var(--bat-purple), 31px 5px var(--eerie-black), 32px 5px var(--eerie-black), 33px 5px var(--eerie-black), 34px 5px var(--eerie-black), 35px 5px var(--eerie-black), 36px 5px var(--eerie-black), 37px 5px var(--eerie-black), 38px 5px var(--eerie-black), 39px 5px var(--bat-purple),
+        
+        5px 6px var(--bat-purple), 6px 6px var(--eerie-black), 7px 6px var(--eerie-black), 8px 6px var(--eerie-black), 9px 6px var(--eerie-black), 10px 6px var(--eerie-black), 11px 6px var(--eerie-black), 12px 6px var(--eerie-black), 13px 6px var(--bat-purple),
+        18px 6px var(--bat-purple), 19px 6px var(--eerie-black), 20px 6px var(--eerie-black), 21px 6px var(--eerie-black), 22px 6px var(--eerie-black), 23px 6px var(--eerie-black), 24px 6px var(--eerie-black), 25px 6px var(--eerie-black), 26px 6px var(--bat-purple),
+        31px 6px var(--bat-purple), 32px 6px var(--eerie-black), 33px 6px var(--eerie-black), 34px 6px var(--eerie-black), 35px 6px var(--eerie-black), 36px 6px var(--eerie-black), 37px 6px var(--eerie-black), 38px 6px var(--eerie-black), 39px 6px var(--bat-purple),
+        
+        6px 7px var(--bat-purple), 7px 7px var(--eerie-black), 8px 7px var(--eerie-black), 9px 7px var(--eerie-black), 10px 7px var(--eerie-black), 11px 7px var(--eerie-black), 12px 7px var(--bat-purple),
+        18px 7px var(--bat-purple), 19px 7px var(--eerie-black), 20px 7px var(--eerie-black), 21px 7px var(--eerie-black), 22px 7px var(--eerie-black), 23px 7px var(--eerie-black), 24px 7px var(--eerie-black), 25px 7px var(--eerie-black), 26px 7px var(--bat-purple),
+        32px 7px var(--bat-purple), 33px 7px var(--eerie-black), 34px 7px var(--eerie-black), 35px 7px var(--eerie-black), 36px 7px var(--eerie-black), 37px 7px var(--eerie-black), 38px 7px var(--bat-purple),
+        
+        7px 8px var(--bat-purple), 8px 8px var(--bat-purple), 9px 8px var(--bat-purple), 10px 8px var(--bat-purple), 11px 8px var(--bat-purple),
+        18px 8px var(--bat-purple), 19px 8px var(--eerie-black), 20px 8px var(--eerie-black), 21px 8px var(--eerie-black), 22px 8px var(--eerie-black), 23px 8px var(--eerie-black), 24px 8px var(--eerie-black), 25px 8px var(--eerie-black), 26px 8px var(--bat-purple),
+        33px 8px var(--bat-purple), 34px 8px var(--bat-purple), 35px 8px var(--bat-purple), 36px 8px var(--bat-purple), 37px 8px var(--bat-purple),
+        
+        19px 9px var(--bat-purple), 20px 9px var(--eerie-black), 21px 9px var(--eerie-black), 22px 9px var(--eerie-black), 23px 9px var(--eerie-black), 24px 9px var(--eerie-black), 25px 9px var(--bat-purple),
+        
+        20px 10px var(--bat-purple), 21px 10px var(--bat-purple), 22px 10px var(--bat-purple), 23px 10px var(--bat-purple), 24px 10px var(--bat-purple),
+        21px 11px var(--bat-purple), 22px 11px var(--bat-purple), 23px 11px var(--bat-purple);
+    }
+
+    /* Animación de caída con rotación */
+    @keyframes batFalling {
+      0% {
+        transform: scale(4) translateY(-200px) rotate(180deg);
+        opacity: 0;
+      }
+      30% {
+        transform: scale(4) translateY(-50px) rotate(180deg);
+        opacity: 1;
+      }
+      60% {
+        transform: scale(4) translateY(0) rotate(180deg);
+      }
+      100% {
+        transform: scale(4) translateY(0) rotate(0deg);
+      }
+    }
+
+    /* Animación de aleteo (frames 1, 2, 3, 2, 1) */
+    @keyframes batFlap {
+      0% {
+        /* Frame 1 - Alas recogidas */
+      }
+      25% {
+        /* Frame 2 - Semi-abiertas */
+      }
+      50% {
+        /* Frame 3 - Completamente abiertas */
+      }
+      75% {
+        /* Frame 2 - Semi-abiertas */
+      }
+      100% {
+        /* Frame 1 - Alas recogidas */
+      }
+    }
+
+    /* Secuencia completa */
+    .loading-animation {
+      animation: batFalling 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+
+    .loading-animation.flapping {
+      animation: none;
+    }
+
+    /* Texto de carga */
+    .loading-text {
+      margin-top: 150px;
+      font-size: 24px;
+      color: var(--bat-lavender);
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in 2s forwards;
+    }
+
+    .loading-dots {
+      display: inline-block;
+      animation: dots 1.5s infinite;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes dots {
+      0%, 20% {
+        content: '.';
+      }
+      40% {
+        content: '..';
+      }
+      60%, 100% {
+        content: '...';
+      }
+    }
+
+    /* Barra de progreso */
+    .progress-bar {
+      width: 300px;
+      height: 4px;
+      background: rgba(74, 20, 140, 0.2);
+      border-radius: 2px;
+      margin: 30px auto 0;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in 2.5s forwards;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--bat-purple), var(--bat-lavender));
+      width: 0;
+      animation: progress 3s ease-in-out 2.5s forwards;
+      box-shadow: 0 0 10px var(--bat-lavender);
+    }
+
+    @keyframes progress {
+      to {
+        width: 100%;
+      }
+    }
+
+    /* Botón de reinicio */
+    .restart-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 32px;
+      background: var(--bat-purple);
+      color: var(--titan-white);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in 5.5s forwards;
+    }
+
+    .restart-btn:hover {
+      background: var(--bat-violet);
+      transform: translateX(-50%) translateY(-3px);
+      box-shadow: 0 10px 25px rgba(74, 20, 140, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-screen">
+    <div class="bat loading-animation frame-1" id="bat"></div>
+    <div class="loading-text">
+      Cargando<span class="loading-dots">...</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+  </div>
+
+  <button class="restart-btn" onclick="restartAnimation()">🔄 Repetir Animación</button>
+
+  <script>
+    const bat = document.getElementById('bat');
+    let currentFrame = 1;
+    let flapInterval;
+
+    // Secuencia de animación
+    setTimeout(() => {
+      // Después de la caída, comenzar el aleteo
+      bat.classList.add('flapping');
+      startFlapping();
+    }, 2000);
+
+    function startFlapping() {
+      const flapSequence = [1, 2, 3, 2, 1];
+      let index = 0;
+
+      flapInterval = setInterval(() => {
+        currentFrame = flapSequence[index];
+        bat.className = `bat flapping frame-${currentFrame}`;
+        index = (index + 1) % flapSequence.length;
+      }, 150); // Cambio de frame cada 150ms
+    }
+
+    function restartAnimation() {
+      // Detener el aleteo
+      clearInterval(flapInterval);
+      
+      // Resetear clases
+      bat.className = 'bat loading-animation frame-1';
+      
+      // Reiniciar todo
+      const elements = document.querySelectorAll('.loading-text, .progress-bar, .restart-btn');
+      elements.forEach(el => {
+        el.style.animation = 'none';
+        el.offsetHeight; // Trigger reflow
+        el.style.animation = null;
+      });
+
+      // Reiniciar secuencia
+      setTimeout(() => {
+        bat.classList.add('flapping');
+        startFlapping();
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

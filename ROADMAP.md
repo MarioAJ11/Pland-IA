@@ -1,7 +1,7 @@
-# 🗺️ Pland-IA - Roadmap de Desarrollo
+# 🗺️ BatPlan - Roadmap de Desarrollo 🦇
 
-> **Última actualización:** 19 de noviembre de 2025  
-> **Estado del proyecto:** Backend completo (100%), Frontend en desarrollo inicial (30%)
+> **Última actualización:** 20 de noviembre de 2025  
+> **Estado del proyecto:** Backend completo (100%), Frontend en desarrollo inicial (60%)
 
 ---
 

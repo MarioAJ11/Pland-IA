@@ -124,12 +124,12 @@ export default function ExpensesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-bg-app dark:bg-bg-dark-app p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-3">
-            <Wallet className="w-8 h-8 text-indigo-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Gastos</h1>
+            <Wallet className="w-8 h-8 text-brand-primary" />
+            <h1 className="text-3xl font-bold text-text-primary dark:text-text-dark-primary">Gastos</h1>
           </div>
           <Button onClick={() => { resetForm(); setIsModalOpen(true); }}>
             <Plus className="w-4 h-4 mr-2" />
@@ -145,7 +145,7 @@ export default function ExpensesPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-gray-900">{formatCurrency(totalExpenses)}</p>
+            <p className="text-3xl font-bold text-text-primary dark:text-text-dark-primary">{formatCurrency(totalExpenses)}</p>
           </CardContent>
         </Card>
 
@@ -154,15 +154,15 @@ export default function ExpensesPage() {
             <Card key={expense.id}>
               <CardHeader>
                 <CardTitle>{expense.description}</CardTitle>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-text-secondary dark:text-text-dark-secondary mt-1">
                   {formatDate(expense.expenseDate)}
                 </p>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold text-indigo-600 mb-3">
+                <p className="text-2xl font-bold text-brand-primary mb-3">
                   {formatCurrency(expense.amount)}
                 </p>
-                <p className="text-sm text-gray-600 mb-3">
+                <p className="text-sm text-text-secondary dark:text-text-dark-secondary mb-3">
                   Método: {expense.paymentMethod}
                 </p>
                 <div className="flex gap-2">
@@ -206,11 +206,11 @@ export default function ExpensesPage() {
               required
             />
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-1">
                 Categoría
               </label>
               <select
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary bg-bg-surface dark:bg-bg-dark-surface text-text-primary dark:text-text-dark-primary"
                 value={formData.categoryId}
                 onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
                 required
@@ -222,11 +222,11 @@ export default function ExpensesPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-primary dark:text-text-dark-primary mb-1">
                 Método de Pago
               </label>
               <select
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary bg-bg-surface dark:bg-bg-dark-surface text-text-primary dark:text-text-dark-primary"
                 value={formData.paymentMethod}
                 onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value as any })}
                 required
